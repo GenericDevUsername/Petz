@@ -9,7 +9,10 @@ namespace PetzClassTesting
       ItemManager itemManager = new ItemManager();
       //Console.WriteLine(itemManager.items);
 
-      petzweb.Models.Item[] items = new petzweb.Models.Item[1];
+      Item[] items = { 
+        new Item("apple", "Apple", "A juicy red apple", "food", 64),
+        new Item("sword", "Sword", "A sharp sword", "weapon", 1)
+      };
       itemManager.saveItem(items);
     }
   }
