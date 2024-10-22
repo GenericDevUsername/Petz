@@ -1,12 +1,12 @@
 ﻿namespace petzweb.Models
 {
-    public class Inventoryitem : Item
+    public class Inventoryitem : RegisteredItem
   {
-    public Item Item { get; private set; }
+    public RegisteredItem Item { get; private set; }
     public int CurrentUses { get; private set; }
     public int Quantity { get; private set; }
 
-    public Inventoryitem(Item item, int quantity) : base(item.RegisteredId, item.Name, item.Description, item.ItemCategory, item.MaxStackSize, item.MaxUses)
+    public Inventoryitem(RegisteredItem item, int quantity) : base(item.RegisteredId, item.Name, item.Description, item.ItemCategory, item.MaxStackSize, item.MaxUses)
     {
       Item = item;
       Quantity = quantity;

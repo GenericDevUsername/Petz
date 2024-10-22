@@ -1,0 +1,9 @@
+﻿FOOD_APPLE:
+  itemCategory: food
+  name: Apple
+  description: A juicy red apple
+  maxStackSize: 64
+  maxUses: 4
+
+
+  
