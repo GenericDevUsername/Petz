@@ -1,12 +1,12 @@
 ﻿namespace petzweb.Models
 {
-    public class Inventoryitem : RegisteredItem
+    public class Inventoryitem
   {
     public RegisteredItem Item { get; private set; }
     public int CurrentUses { get; private set; }
     public int Quantity { get; private set; }
 
-    public Inventoryitem(RegisteredItem item, int quantity) : base(item.RegisteredId, item.Name, item.Description, item.ItemCategory, item.MaxStackSize, item.MaxUses)
+    public Inventoryitem(RegisteredItem item, int quantity)
     {
       Item = item;
       Quantity = quantity;
@@ -67,27 +67,27 @@
       }
     }
 
-    public bool Merge(Inventoryitem item)
+    public bool Merge(Inventoryitem inventoryItem)
     {
-      if (Item != item.Item)
+      if (Item != inventoryItem.Item)
       {
         return false;
       }
 
-      int total = Quantity + item.Quantity;
-      if (total <= MaxStackSize)
+      int total = Quantity + inventoryItem.Quantity;
+      if (total <= Item.MaxStackSize)
       {
         Quantity = total;
-        this.Repair(item.MaxUses - item.CurrentUses);
-        item.SetQuantity(0);
+        this.Repair(inventoryItem.Item.MaxUses - inventoryItem.CurrentUses);
+        inventoryItem.SetQuantity(0);
         return true;
       }
-      else if (total > MaxStackSize)
+      else if (total > Item.MaxStackSize)
       {
-        int remainder = total - MaxStackSize;
-        Quantity = MaxStackSize;
-        this.Repair(item.MaxUses - item.CurrentUses);
-        item.SetQuantity(remainder);
+        int remainder = total - Item.MaxStackSize;
+        Quantity = Item.MaxStackSize;
+        this.Repair(inventoryItem.Item.MaxUses - inventoryItem.CurrentUses);
+        inventoryItem.SetQuantity(remainder);
         return true;
       }
       else

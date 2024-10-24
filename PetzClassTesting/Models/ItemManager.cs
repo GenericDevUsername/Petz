@@ -20,6 +20,7 @@ namespace petzweb.Models
       // Load items from data/items.yml file
       var deserializer = new DeserializerBuilder()
         .WithNamingConvention(CamelCaseNamingConvention.Instance)
+        .IgnoreUnmatchedProperties()
         .Build();
 
       var loadedItems = deserializer.Deserialize<Dictionary<string, Item>>(yamlFile);
@@ -38,8 +39,7 @@ namespace petzweb.Models
 
       // remove registeredId from dictionary
       var itemDict = items.ToDictionary(item => item.RegisteredId, item => {
-        var itemCopy = item;
-
+        Item itemCopy = new Item(item);
         return itemCopy;
       });
 
