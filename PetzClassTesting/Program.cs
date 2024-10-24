@@ -9,9 +9,9 @@ namespace PetzClassTesting
       ItemManager itemManager = new ItemManager();
       //Console.WriteLine(itemManager.items);
 
-      Item[] items = { 
-        new Item("apple", "Apple", "A juicy red apple", "food", 64),
-        new Item("sword", "Sword", "A sharp sword", "weapon", 1)
+      RegisteredItem[] items = { 
+        new RegisteredItem("apple", "Apple", "A juicy red apple", "food", 64),
+        new RegisteredItem("sword", "Sword", "A sharp sword", "weapon", 1)
       };
       itemManager.saveItem(items);
     }
