@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace petzweb.Models
+﻿namespace petzweb.Models
 {
   public class Pet
   {
@@ -12,17 +6,39 @@ namespace petzweb.Models
     public string Name { get; set; }
 
     /// STATISTICS ///
-    public DateTime DateCreated { get; private set; }
-    public int Hunger { get; private set; }
-    public int Happiness { get; private set; }
-    public int Love { get; private set;}
-    public int Health { get; private set; }
-    public int Energy { get; private set; }
-    public int BodyTemp { get; private set; }
-    public bool IsSick { get; private set; }
+    public DateTime DateCreated { get; internal set; }
+    public int Hunger { get; internal set; }
+    public int Happiness { get; internal set; }
+    public int Love { get; internal set;}
+    public int Health { get; internal set; }
+    public int Energy { get; internal set; }
+    public int BodyTemperature { get; internal set; }
+    public bool IsSick { get; internal set; }
+    
+    /// Max Stats ///
+    public int? MaxHunger { get; internal set; } = 100;
+    public int? MaxHappiness { get; internal set; } = 100;
+    public int? MaxLove { get; internal set; }
+    public int? MaxHealth { get; internal set; } = 100;
+    public int? MaxEnergy { get; internal set; } = 100;
+    public int? MaxBodyTemperature { get; internal set; } = 100;
 
     /// PET BOUND INVENTORY ///
-    public int Coins { get; private set; }
+    public int Coins { get; internal set; }
 
+    public Pet(string name)
+    {
+      Name = name;
+      DateCreated = DateTime.Now;
+      Hunger = 50;
+      Happiness = 50; 
+      Love = 50; 
+      Health = 100; 
+      Energy = 100; 
+      BodyTemperature = 37; 
+      IsSick = true; 
+      
+      Coins = 10;
+    }
   }
 }
