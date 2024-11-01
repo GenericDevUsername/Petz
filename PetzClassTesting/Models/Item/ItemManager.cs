@@ -1,4 +1,5 @@
-﻿using petzweb.Models;
+﻿using PetzClassTesting;
+using petzweb.Models;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -51,14 +52,14 @@ namespace petzweb.Models
 
     private static string ReadItemsFile()
     {
-      if (!File.Exists("Data/Items.yml"))
+      if (!File.Exists(Program.GameDataPath + "/items.yml"))
       {
-        File.WriteAllText("Data/Items.yml", "");
+        File.WriteAllText(Program.GameDataPath + "/items.yml", "");
         return string.Empty;
       }
       else
       {
-        return File.ReadAllText("Data/Items.yml");
+        return File.ReadAllText(Program.GameDataPath + "/items.yml");
       }
     }
 

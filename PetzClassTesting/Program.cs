@@ -1,27 +1,21 @@
 ﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 using petzweb.Models;
 
 namespace PetzClassTesting
 {
   internal class Program
   {
+    public static readonly string GameDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/.petzgame";
+    public static readonly string SavesPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/.petzgame/Saves";
+    
+    public static readonly ItemManager ItemManager = new();
+    
     private static void Main(string[] args)
     {
-      var itemManager = new ItemManager();
-      //Console.WriteLine(itemManager.items);
+      Initialize();
 
-      /*List<string> onUseActions = [
-        "heal{amount=20}",
-        "cureIllness{chance=0.5}"
-      ];
-      RegisteredItem[] items =
-      [
-        new RegisteredItem("apple", new Item("food", "Apple", "A juicy red apple", 64, onUse: onUseActions)),
-        new RegisteredItem("sword", new Item("weapon", "Sword", "A sharp sword", 1))
-      ];
-      itemManager.SaveItem(items);*/
-      
-      RegisteredItem paracetamol = itemManager.GetItem("paracetamol");
+      RegisteredItem paracetamol = ItemManager.GetItem("paracetamol");
       Pet pet = new Pet("Fido")
       {
         Health = 50,
@@ -33,7 +27,22 @@ namespace PetzClassTesting
       paracetamol.UseItem(pet);
       Console.WriteLine(pet.Health + "/" + pet.MaxHealth);
       Console.WriteLine(pet.IsSick);
+    }
+
+    private static void Initialize()
+    {
+      List<string> requiredDirectories =
+      [
+        GameDataPath,
+        GameDataPath + "/saves"
+      ];
+      Console.WriteLine($"[DEBUG] Creating Save Directory: {GameDataPath}");
       
+      // Create the directory if it doesn't exist
+      foreach (var directory in requiredDirectories.Where(directory => !Directory.Exists(directory)))
+      {
+        Directory.CreateDirectory(directory);
+      }
     }
   }
 }
