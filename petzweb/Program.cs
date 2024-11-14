@@ -6,8 +6,9 @@ namespace petzweb;
 
 internal class Program
 {
-  public static readonly string GameDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/.petzgame";
-  public static readonly string SavesPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/.petzgame/Saves";
+  public static readonly string GameDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create) + "/.petzgame";
+  public static string GameSavesPath => GameDataPath + "/saves";
+  public bool Initialised { get; private set; } = false;
     
   public static readonly ItemManager ItemManager = new();
   public static readonly RoomManager RoomManager = new();
@@ -17,7 +18,7 @@ internal class Program
     Initialize();
 
     RegisteredItem paracetamol = ItemManager.GetItem("paracetamol");
-    Pet pet = new Pet()
+    Pet pet = new()
     {
       Name = "Fido",
       Health = 50,
@@ -36,14 +37,19 @@ internal class Program
     List<string> requiredDirectories =
     [
       GameDataPath,
-      GameDataPath + "/saves"
+      GameSavesPath,
     ];
-    Console.WriteLine($"[DEBUG] Creating Save Directory: {GameDataPath}");
       
     // Create the directory if it doesn't exist
+    Console.WriteLine($"[DEBUG] Creating Save Directory: {GameDataPath}");
     foreach (string directory in requiredDirectories.Where(directory => !Directory.Exists(directory)))
     {
       Directory.CreateDirectory(directory);
     }
+
+    // Load required game objects
+    Console.WriteLine("[DEBUG] Loading Game Objects");
+    ItemManager.LoadItems();
+    RoomManager.LoadRooms();
   }
 }

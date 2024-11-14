@@ -10,10 +10,9 @@ public class ItemManager
 
   public ItemManager()
   {
-    this.LoadItems();
   }
 
-  private void LoadItems()
+  internal void LoadItems()
   {
     string yamlFile = ReadItemsFile();
 

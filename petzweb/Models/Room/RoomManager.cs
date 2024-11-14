@@ -10,10 +10,9 @@ public class RoomManager
 
   public RoomManager()
   {
-    LoadRooms();
   }
 
-  private void LoadRooms()
+  internal void LoadRooms()
   {
     string yamlFile = ReadItemsFile();
 
