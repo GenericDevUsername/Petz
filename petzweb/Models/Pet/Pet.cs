@@ -1,4 +1,5 @@
 ﻿using petzweb.Models.Room;
+using petzweb.Models.Inventory;
 
 namespace petzweb.Models;
 public class Pet
@@ -28,10 +29,12 @@ public class Pet
 
     /// PET BOUND INVENTORY ///
     public int Coins { get; internal set; }
+    public PetInventory Inventory { get; internal set; }
 
     public Pet(RegisteredRoom room)
     {
         CurrentRoom = new PetRoom(room);
+        Inventory = new PetInventory(this);
         Hunger = MaxHunger;
         Happiness = MaxHappiness;
         Love = 0;

@@ -1,111 +1,123 @@
-﻿namespace petzweb.Models;
-public class Inventoryitem(RegisteredItem item, int quantity, Inventory inventory)
+﻿namespace petzweb.Models.Inventory;
+public class InventoryItem(RegisteredItem item, int quantity, PetInventory inventory)
 {
-  public RegisteredItem Item { get; private set; } = item;
-  private Inventory Inventory { get; set; } = inventory;
-  public int CurrentUses { get; private set; } = 0;
-  public int Quantity { get; private set; } = quantity;
+    public RegisteredItem Item { get; private set; } = item;
+    private PetInventory Inventory { get; set; } = inventory;
+    public int CurrentUses { get; private set; } = 0;
+    public int Quantity { get; private set; } = quantity;
 
-  public void Add(int quantity)
-  {
-    Quantity += quantity;
-  }
-
-  public void Remove(int quantity)
-  {
-    Quantity -= quantity;
-  }
-
-  public void SetQuantity(int quantity)
-  {
-    Quantity = quantity;
-  }
-
-  public void Use(int amount = 1)
-  {
-    while (true)
+    public void Add(int quantity)
     {
-      if (CurrentUses + amount <= Item.MaxUses)
+      if (Quantity + quantity <= Item.MaxStackSize)
       {
-        CurrentUses += amount;
-        if (CurrentUses == Item.MaxUses)
-        {
-          Quantity--;
-          CurrentUses = 0;
-        }
+        Quantity += quantity;
       }
-      else if (CurrentUses + amount > Item.MaxUses)
+      else if (Quantity + quantity > Item.MaxStackSize)
       {
-        int remainder = (CurrentUses + amount) - Item.MaxUses;
-        CurrentUses = 0;
-        Quantity--;
+        int remainder = Quantity + quantity - Item.MaxStackSize;
+        Quantity = Item.MaxStackSize;
         if (remainder > 0)
         {
-          amount = remainder;
-          continue;
+          Inventory.AddItem(Item, remainder);
         }
       }
-          
-      Item.UseItem(Inventory.Pet);
-
-      break;
     }
-  }
 
-  public void Repair(int amount = 1)
-  {
-    while (true)
+    public void Remove(int quantity)
     {
-      switch (CurrentUses - amount)
-      {
-        case >= 0:
-          CurrentUses -= amount;
-          break;
-        case < 0:
+        Quantity -= quantity;
+    }
+
+    public void SetQuantity(int quantity)
+    {
+        Quantity = quantity;
+    }
+
+    public void Use(int amount = 1)
+    {
+        while (true)
         {
-          int remainder = amount - CurrentUses;
-          CurrentUses = Item.MaxUses;
-          Quantity++;
-          if (remainder > 0)
-          {
-            amount = remainder;
-            continue;
-          }
-          break;
+            if (CurrentUses + amount <= Item.MaxUses)
+            {
+                CurrentUses += amount;
+                if (CurrentUses == Item.MaxUses)
+                {
+                    Quantity--;
+                    CurrentUses = 0;
+                }
+            }
+            else if (CurrentUses + amount > Item.MaxUses)
+            {
+                int remainder = CurrentUses + amount - Item.MaxUses;
+                CurrentUses = 0;
+                Quantity--;
+                if (remainder > 0)
+                {
+                    amount = remainder;
+                    continue;
+                }
+            }
+
+            Item.UseItem(Inventory.Pet);
+
+            break;
         }
-      }
-
-      break;
-    }
-  }
-
-  public bool Merge(Inventoryitem inventoryItem)
-  {
-    if (Item != inventoryItem.Item)
-    {
-      return false;
     }
 
-    int total = Quantity + inventoryItem.Quantity;
-    if (total <= Item.MaxStackSize)
+    public void Repair(int amount = 1)
     {
-      Quantity = total;
-      this.Repair(inventoryItem.Item.MaxUses - inventoryItem.CurrentUses);
-      inventoryItem.SetQuantity(0);
-      return true;
+        while (true)
+        {
+            switch (CurrentUses - amount)
+            {
+                case >= 0:
+                    CurrentUses -= amount;
+                    break;
+                case < 0:
+                    {
+                        int remainder = amount - CurrentUses;
+                        CurrentUses = Item.MaxUses;
+                        Quantity++;
+                        if (remainder > 0)
+                        {
+                            amount = remainder;
+                            continue;
+                        }
+                        break;
+                    }
+            }
+
+            break;
+        }
     }
-    else if (total > Item.MaxStackSize)
+
+    public bool Merge(InventoryItem inventoryItem)
     {
-      int remainder = total - Item.MaxStackSize;
-      Quantity = Item.MaxStackSize;
-      this.Repair(inventoryItem.Item.MaxUses - inventoryItem.CurrentUses);
-      inventoryItem.SetQuantity(remainder);
-      return true;
+        if (Item != inventoryItem.Item)
+        {
+            return false;
+        }
+
+        int total = Quantity + inventoryItem.Quantity;
+        if (total <= Item.MaxStackSize)
+        {
+            Quantity = total;
+            Repair(inventoryItem.Item.MaxUses - inventoryItem.CurrentUses);
+            inventoryItem.SetQuantity(0);
+            return true;
+        }
+        else if (total > Item.MaxStackSize)
+        {
+            int remainder = total - Item.MaxStackSize;
+            Quantity = Item.MaxStackSize;
+            Repair(inventoryItem.Item.MaxUses - inventoryItem.CurrentUses);
+            inventoryItem.SetQuantity(remainder);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
-    else
-    {
-      return false;
-    }
-  }
 
 }
