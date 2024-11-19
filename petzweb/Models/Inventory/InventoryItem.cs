@@ -1,5 +1,4 @@
 ﻿namespace petzweb.Models;
-
 public class Inventoryitem(RegisteredItem item, int quantity, Inventory inventory)
 {
   public RegisteredItem Item { get; private set; } = item;

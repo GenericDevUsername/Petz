@@ -1,5 +1,4 @@
 ﻿namespace petzweb.Models;
-
 public class ItemData
 {
   public string ItemCategory { get; private set; } = "misc";

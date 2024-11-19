@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace petzweb.Models;
 
+namespace petzweb.Models;
 public partial class UseActionExecutor
 {
     [GeneratedRegex(@"<(?<key>[^<>|]+)(\|(?<fallback>[^<>]*))?>")]

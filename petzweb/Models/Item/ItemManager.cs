@@ -1,8 +1,8 @@
 ﻿using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
-namespace petzweb.Models;
 
+namespace petzweb.Models;
 public class ItemManager
 {
   private readonly Dictionary<string, RegisteredItem> _items = new();

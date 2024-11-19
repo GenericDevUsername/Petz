@@ -1,7 +1,7 @@
 ﻿using System.Data;
 
-namespace petzweb.Models;
 
+namespace petzweb.Models;
 public class VariableStore
 {
     private readonly Dictionary<string, string?> _variables = new();

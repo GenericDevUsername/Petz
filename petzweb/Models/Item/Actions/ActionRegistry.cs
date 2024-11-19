@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 
-namespace petzweb.Models;
 
+namespace petzweb.Models;
 [AttributeUsage(AttributeTargets.Class)]
 public class SetAliasesAttribute(params string[] aliases) : Attribute
 {

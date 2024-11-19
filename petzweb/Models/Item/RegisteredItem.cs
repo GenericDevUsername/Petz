@@ -1,6 +1,4 @@
-﻿using petzweb.Models.Actions;
-
-namespace petzweb.Models;
+﻿namespace petzweb.Models;
 
 public class RegisteredItem: ItemData
 {
