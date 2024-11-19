@@ -3,7 +3,7 @@
 public class RoomData
 {
     /// STATISTICS ///
-    int AmbientRoomTemperature { get; set; } = 20;
+    public int AmbientRoomTemperature { get; set; } = 20;
 
     protected RoomData(RoomData roomData)
     {

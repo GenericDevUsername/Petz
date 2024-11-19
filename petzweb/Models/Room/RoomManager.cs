@@ -23,7 +23,7 @@ public class RoomManager
       .Build();
 
     Dictionary<string, RoomData>? loadedItems = deserializer.Deserialize<Dictionary<string, RoomData>?>(yamlFile) ??
-                                                new Dictionary<string, RoomData>();
+                                                [];
 
     // register rooms
     int registeredRoomCount = 0;

@@ -1,6 +1,4 @@
-﻿using petzweb.Models;
-
-namespace petzweb.Models.Actions;
+﻿namespace petzweb.Models.Actions;
 public abstract class ValueChangeAction: IUseAction
 {
     public virtual void Execute(Pet pet, Dictionary<string, string> parameters, VariableStore variableStore)

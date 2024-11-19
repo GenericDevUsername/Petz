@@ -9,4 +9,9 @@ public class RegisteredRoom : RoomData
         RegisteredId = registeredId;
     }
 
+    public RegisteredRoom(RegisteredRoom room) : base(room)
+    {
+        RegisteredId = room.RegisteredId;
+    }
+
 }

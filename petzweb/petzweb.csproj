@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <Folder Include="Models\Item\Actions\Room\" />
-    <Folder Include="Models\Pet\" />
+    <Folder Include="View\" />
   </ItemGroup>
 
 </Project>

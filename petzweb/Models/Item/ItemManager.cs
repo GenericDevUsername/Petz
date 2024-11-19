@@ -1,5 +1,4 @@
-﻿using petzweb;
-using YamlDotNet.Serialization;
+﻿using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
 namespace petzweb.Models;
@@ -22,8 +21,7 @@ public class ItemManager
       .IgnoreUnmatchedProperties()
       .Build();
 
-    Dictionary<string, ItemData>? loadedItems = deserializer.Deserialize<Dictionary<string, ItemData>?>(yamlFile) ??
-                                                new Dictionary<string, ItemData>();
+    Dictionary<string, ItemData>? loadedItems = deserializer.Deserialize<Dictionary<string, ItemData>?>(yamlFile) ?? [];
       
     // register items
     int registeredItemCount = 0;

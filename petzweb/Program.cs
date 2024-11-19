@@ -18,7 +18,8 @@ internal class Program
     Initialize();
 
     RegisteredItem paracetamol = ItemManager.GetItem("paracetamol");
-    Pet pet = new()
+    RegisteredRoom registeredRoom = RoomManager.GetRoom("living_room");
+    Pet pet = new(registeredRoom)
     {
       Name = "Fido",
       Health = 50,
