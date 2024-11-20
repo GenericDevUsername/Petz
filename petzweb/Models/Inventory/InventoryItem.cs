@@ -1,26 +1,26 @@
-﻿namespace petzweb.Models.Inventory;
-public class InventoryItem(RegisteredItem item, int quantity, PetInventory inventory)
+﻿using petzweb.Models.Item;
+
+namespace petzweb.Models.Inventory;
+
+public class InventoryItem(RegisteredItem item, int quantity, GameInventory inventory)
 {
-    public RegisteredItem Item { get; private set; } = item;
-    private PetInventory Inventory { get; set; } = inventory;
-    public int CurrentUses { get; private set; } = 0;
+    public RegisteredItem Item { get; } = item;
+    private GameInventory Inventory { get; } = inventory;
+    public int CurrentUses { get; private set; }
     public int Quantity { get; private set; } = quantity;
 
     public void Add(int quantity)
     {
-      if (Quantity + quantity <= Item.MaxStackSize)
-      {
-        Quantity += quantity;
-      }
-      else if (Quantity + quantity > Item.MaxStackSize)
-      {
-        int remainder = Quantity + quantity - Item.MaxStackSize;
-        Quantity = Item.MaxStackSize;
-        if (remainder > 0)
+        if (Quantity + quantity <= Item.MaxStackSize)
         {
-          Inventory.AddItem(Item, remainder);
+            Quantity += quantity;
         }
-      }
+        else if (Quantity + quantity > Item.MaxStackSize)
+        {
+            int remainder = Quantity + quantity - Item.MaxStackSize;
+            Quantity = Item.MaxStackSize;
+            if (remainder > 0) Inventory.AddItem(Item, remainder);
+        }
     }
 
     public void Remove(int quantity)
@@ -58,7 +58,7 @@ public class InventoryItem(RegisteredItem item, int quantity, PetInventory inven
                 }
             }
 
-            Item.UseItem(Inventory.Pet);
+            Item.UseItem(Inventory.GameData);
 
             break;
         }
@@ -74,17 +74,18 @@ public class InventoryItem(RegisteredItem item, int quantity, PetInventory inven
                     CurrentUses -= amount;
                     break;
                 case < 0:
+                {
+                    int remainder = amount - CurrentUses;
+                    CurrentUses = Item.MaxUses;
+                    Quantity++;
+                    if (remainder > 0)
                     {
-                        int remainder = amount - CurrentUses;
-                        CurrentUses = Item.MaxUses;
-                        Quantity++;
-                        if (remainder > 0)
-                        {
-                            amount = remainder;
-                            continue;
-                        }
-                        break;
+                        amount = remainder;
+                        continue;
                     }
+
+                    break;
+                }
             }
 
             break;
@@ -93,10 +94,7 @@ public class InventoryItem(RegisteredItem item, int quantity, PetInventory inven
 
     public bool Merge(InventoryItem inventoryItem)
     {
-        if (Item != inventoryItem.Item)
-        {
-            return false;
-        }
+        if (Item != inventoryItem.Item) return false;
 
         int total = Quantity + inventoryItem.Quantity;
         if (total <= Item.MaxStackSize)
@@ -106,7 +104,8 @@ public class InventoryItem(RegisteredItem item, int quantity, PetInventory inven
             inventoryItem.SetQuantity(0);
             return true;
         }
-        else if (total > Item.MaxStackSize)
+
+        if (total > Item.MaxStackSize)
         {
             int remainder = total - Item.MaxStackSize;
             Quantity = Item.MaxStackSize;
@@ -114,10 +113,7 @@ public class InventoryItem(RegisteredItem item, int quantity, PetInventory inven
             inventoryItem.SetQuantity(remainder);
             return true;
         }
-        else
-        {
-            return false;
-        }
-    }
 
+        return false;
+    }
 }

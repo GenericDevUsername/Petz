@@ -1,56 +1,76 @@
-﻿using System.Diagnostics;
-using System.Runtime.InteropServices;
-using petzweb.Models;
+﻿using petzweb.Models;
+using petzweb.Models.Game;
+using petzweb.Models.Inventory;
+using petzweb.Models.Item;
+using petzweb.ViewModel;
+using petzweb.Views;
+using petzweb.Models.Pet;
+using petzweb.Models.Room;
 
 namespace petzweb;
 
-internal class Program
+internal abstract class Program
 {
-  public static readonly string GameDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create) + "/.petzgame";
-  public static string GameSavesPath => GameDataPath + "/saves";
-  public bool Initialised { get; private set; } = false;
+    public static readonly string GameDataPath =
+        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create) +
+        "/.petzgame";
     
-  public static readonly ItemManager ItemManager = new();
-  public static readonly RoomManager RoomManager = new();
-    
-  private static void Main(string[] args)
-  {
-    Initialize();
+    public static string GameSavesPath => GameDataPath + "/saves";
+    public bool Initialised { get; private set; } = false;
 
-    RegisteredItem paracetamol = ItemManager.GetItem("paracetamol");
-    RegisteredRoom registeredRoom = RoomManager.GetRoom("living_room");
-    Pet pet = new(registeredRoom)
+    private static void Main(string[] args)
     {
-      Name = "Fido",
-      Health = 50,
-    };
-    Console.WriteLine(paracetamol.ShopPrice);
-    Console.WriteLine(pet.Health + "/" + pet.MaxHealth);
-    Console.WriteLine(pet.IsSick);
-    // count how long it takes to use the item
-    paracetamol.UseItem(pet);
-    Console.WriteLine(pet.Health + "/" + pet.MaxHealth);
-    Console.WriteLine(pet.IsSick);
-  }
+        GameManager.Initialize();
 
-  private static void Initialize()
-  {
-    List<string> requiredDirectories =
-    [
-      GameDataPath,
-      GameSavesPath,
-    ];
-      
-    // Create the directory if it doesn't exist
-    Console.WriteLine($"[DEBUG] Creating Save Directory: {GameDataPath}");
-    foreach (string directory in requiredDirectories.Where(directory => !Directory.Exists(directory)))
-    {
-      Directory.CreateDirectory(directory);
+        /*RegisteredRoom? room = GameManager.RoomManager.GetRoom("living_room");
+        int i = 0;
+        while (i < 10)
+        {
+            Random random = new Random();
+            GameManager saveToMake = new GameManager()
+            {
+                Data = new GameData()
+                {
+                    Pet = new GamePet(GameManager.PetManager.GetPet("dog"))
+                    {
+                        Name = random.Next(0, 100).ToString(),
+                        Love = random.Next(0, 14),
+                        Happiness = random.Next(1, 100),
+                        Hunger = random.Next(1, 100),
+                        Health = random.Next(1, 100),
+                        Energy = random.Next(1, 100),
+                        BodyTemperature = random.Next(1, 100),
+                        IsSick = random.Next(0, 1) == 1
+                    },
+                    Room = new GameRoom(room)
+                }
+            };
+            saveToMake.Data.Inventory = new GameInventory(saveToMake.Data);
+            saveToMake.Save();
+          i++;
+        }*/
+
+        /*Dictionary<string, RoomData> rooms = new();
+        rooms.Add("living_room", new RoomData(){RoomName = "Living Room", RoomDescription = "A cozy living room with a fireplace and a TV.", AmbientRoomTemperature = 20});
+        rooms.Add("kitchen", new RoomData(){RoomName = "Kitchen", RoomDescription = "A kitchen with a fridge and a stove.", AmbientRoomTemperature = 20});
+        rooms.Add("bedroom", new RoomData(){RoomName = "Bedroom", RoomDescription = "A bedroom with a bed and a closet.", AmbientRoomTemperature = 20});
+        rooms.Add("bathroom", new RoomData(){RoomName = "Bathroom", RoomDescription = "A bathroom with a shower and a toilet.", AmbientRoomTemperature = 20});
+        rooms.Add("microwave", new RoomData(){RoomName = "Microwave", RoomDescription = "A microwave.", AmbientRoomTemperature = 1000});
+        GameManager.RoomManager.SaveRooms(rooms);*/
+        
+        /*Dictionary<string, PetData> pets = new();
+        pets.Add("dog", new PetData(){SpeciesName = "Dog", Icon = "🐶", PreferredTemperature = 20, MaxBodyTemperature = 40, MinBodyTemperature = 10, MaxHappiness = 100, MaxHealth = 100, MaxHunger = 100, MaxEnergy = 100, MaxLove = 100,
+            Description = "The trusty companion of humans. Dogs are loyal and loving animals that require a lot of attention and care."});
+        pets.Add("cat", new PetData(){SpeciesName = "Cat", Icon = "🐱", PreferredTemperature = 20, MaxBodyTemperature = 40, MinBodyTemperature = 10, MaxHappiness = 100, MaxHealth = 100, MaxHunger = 100, MaxEnergy = 100, MaxLove = 100,
+            Description = "The independent feline. Cats are known for their playful and curious nature. They require a lot of attention and care."});
+        pets.Add("fish", new PetData(){SpeciesName = "Fish", Icon = "🐟", PreferredTemperature = 20, MaxBodyTemperature = 40, MinBodyTemperature = 10, MaxHappiness = 100, MaxHealth = 100, MaxHunger = 100, MaxEnergy = 100, MaxLove = 100,
+            Description = "The aquatic pet. Fish are low maintenance pets that require a clean tank and regular feeding."});
+        pets.Add("bird", new PetData(){SpeciesName = "Bird", Icon = "🐦", PreferredTemperature = 20, MaxBodyTemperature = 40, MinBodyTemperature = 10, MaxHappiness = 100, MaxHealth = 100, MaxHunger = 100, MaxEnergy = 100, MaxLove = 100,
+            Description = "The chirpy companion. Birds are social animals that require a lot of attention and care."});
+        GameManager.PetManager.SavePets(pets);*/
+
+
+        Renderer.Start(new MainMenu());
+        ConsoleKeyInfo key = Console.ReadKey();
     }
-
-    // Load required game objects
-    Console.WriteLine("[DEBUG] Loading Game Objects");
-    ItemManager.LoadItems();
-    RoomManager.LoadRooms();
-  }
 }

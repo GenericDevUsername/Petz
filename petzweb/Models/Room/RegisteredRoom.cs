@@ -2,8 +2,6 @@
 
 public class RegisteredRoom : RoomData
 {
-    public string RegisteredId { get; private set; }
-    
     public RegisteredRoom(string registeredId, RoomData roomData) : base(roomData)
     {
         RegisteredId = registeredId;
@@ -14,4 +12,9 @@ public class RegisteredRoom : RoomData
         RegisteredId = room.RegisteredId;
     }
 
+    public RegisteredRoom()
+    {
+    }
+
+    public string RegisteredId { get; }
 }
