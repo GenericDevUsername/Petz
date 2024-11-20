@@ -1,5 +1,4 @@
-﻿using petzweb.Models.Pet;
-
+﻿
 namespace petzweb.Models.Game.Actions.Pet;
 
 public abstract class ValueChangeAction : IUseAction
