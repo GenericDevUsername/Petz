@@ -16,7 +16,6 @@ public static class Renderer
         if (Initialised) throw new InvalidOperationException("Renderer has already been initialised.");
         Initialised = true;
         Console.Clear();
-        Console.OutputEncoding = Encoding.UTF8;
         Console.CursorVisible = false;
 
 

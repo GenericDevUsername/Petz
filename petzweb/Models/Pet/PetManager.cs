@@ -65,7 +65,7 @@ public class PetManager
         return _pets[registeredId];
     }
 
-    public List<RegisteredPet> GetPet()
+    public List<RegisteredPet> GetPets()
     {
         return _pets.Values.ToList();
     }

@@ -1,76 +1,73 @@
-﻿using petzweb.Models;
-using petzweb.Models.Game;
-using petzweb.Models.Inventory;
-using petzweb.Models.Item;
+﻿using petzweb.Models.Game;
 using petzweb.ViewModel;
 using petzweb.Views;
-using petzweb.Models.Pet;
-using petzweb.Models.Room;
+using System.Text;
 
 namespace petzweb;
 
 internal abstract class Program
 {
-    public static readonly string GameDataPath =
-        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create) +
-        "/.petzgame";
-    
-    public static string GameSavesPath => GameDataPath + "/saves";
-    public bool Initialised { get; private set; } = false;
+  public static readonly string GameDataPath =
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create) +
+      "/.petzgame";
 
-    private static void Main(string[] args)
+  public static string GameSavesPath => GameDataPath + "/saves";
+  public bool Initialised { get; private set; } = false;
+
+  private static void Main(string[] args)
+  {
+    Console.OutputEncoding = Encoding.UTF8;
+    GameManager.Initialize();
+
+    /*RegisteredRoom? room = GameManager.RoomManager.GetRoom("living_room");
+    int i = 0;
+    while (i < 10)
     {
-        GameManager.Initialize();
-
-        /*RegisteredRoom? room = GameManager.RoomManager.GetRoom("living_room");
-        int i = 0;
-        while (i < 10)
+        Random random = new Random();
+        GameManager saveToMake = new GameManager()
         {
-            Random random = new Random();
-            GameManager saveToMake = new GameManager()
+            Data = new GameData()
             {
-                Data = new GameData()
+                Pet = new GamePet(GameManager.PetManager.GetPet("dog"))
                 {
-                    Pet = new GamePet(GameManager.PetManager.GetPet("dog"))
-                    {
-                        Name = random.Next(0, 100).ToString(),
-                        Love = random.Next(0, 14),
-                        Happiness = random.Next(1, 100),
-                        Hunger = random.Next(1, 100),
-                        Health = random.Next(1, 100),
-                        Energy = random.Next(1, 100),
-                        BodyTemperature = random.Next(1, 100),
-                        IsSick = random.Next(0, 1) == 1
-                    },
-                    Room = new GameRoom(room)
-                }
-            };
-            saveToMake.Data.Inventory = new GameInventory(saveToMake.Data);
-            saveToMake.Save();
-          i++;
-        }*/
+                    Name = random.Next(0, 100).ToString(),
+                    Love = random.Next(0, 14),
+                    Happiness = random.Next(1, 100),
+                    Hunger = random.Next(1, 100),
+                    Health = random.Next(1, 100),
+                    Energy = random.Next(1, 100),
+                    BodyTemperature = random.Next(1, 100),
+                    IsSick = random.Next(0, 1) == 1
+                },
+                Room = new GameRoom(room)
+            }
+        };
+        saveToMake.Data.Inventory = new GameInventory(saveToMake.Data);
+        saveToMake.Save();
+      i++;
+    }*/
 
-        /*Dictionary<string, RoomData> rooms = new();
-        rooms.Add("living_room", new RoomData(){RoomName = "Living Room", RoomDescription = "A cozy living room with a fireplace and a TV.", AmbientRoomTemperature = 20});
-        rooms.Add("kitchen", new RoomData(){RoomName = "Kitchen", RoomDescription = "A kitchen with a fridge and a stove.", AmbientRoomTemperature = 20});
-        rooms.Add("bedroom", new RoomData(){RoomName = "Bedroom", RoomDescription = "A bedroom with a bed and a closet.", AmbientRoomTemperature = 20});
-        rooms.Add("bathroom", new RoomData(){RoomName = "Bathroom", RoomDescription = "A bathroom with a shower and a toilet.", AmbientRoomTemperature = 20});
-        rooms.Add("microwave", new RoomData(){RoomName = "Microwave", RoomDescription = "A microwave.", AmbientRoomTemperature = 1000});
-        GameManager.RoomManager.SaveRooms(rooms);*/
-        
-        /*Dictionary<string, PetData> pets = new();
-        pets.Add("dog", new PetData(){SpeciesName = "Dog", Icon = "🐶", PreferredTemperature = 20, MaxBodyTemperature = 40, MinBodyTemperature = 10, MaxHappiness = 100, MaxHealth = 100, MaxHunger = 100, MaxEnergy = 100, MaxLove = 100,
-            Description = "The trusty companion of humans. Dogs are loyal and loving animals that require a lot of attention and care."});
-        pets.Add("cat", new PetData(){SpeciesName = "Cat", Icon = "🐱", PreferredTemperature = 20, MaxBodyTemperature = 40, MinBodyTemperature = 10, MaxHappiness = 100, MaxHealth = 100, MaxHunger = 100, MaxEnergy = 100, MaxLove = 100,
-            Description = "The independent feline. Cats are known for their playful and curious nature. They require a lot of attention and care."});
-        pets.Add("fish", new PetData(){SpeciesName = "Fish", Icon = "🐟", PreferredTemperature = 20, MaxBodyTemperature = 40, MinBodyTemperature = 10, MaxHappiness = 100, MaxHealth = 100, MaxHunger = 100, MaxEnergy = 100, MaxLove = 100,
-            Description = "The aquatic pet. Fish are low maintenance pets that require a clean tank and regular feeding."});
-        pets.Add("bird", new PetData(){SpeciesName = "Bird", Icon = "🐦", PreferredTemperature = 20, MaxBodyTemperature = 40, MinBodyTemperature = 10, MaxHappiness = 100, MaxHealth = 100, MaxHunger = 100, MaxEnergy = 100, MaxLove = 100,
-            Description = "The chirpy companion. Birds are social animals that require a lot of attention and care."});
-        GameManager.PetManager.SavePets(pets);*/
+    /*Dictionary<string, RoomData> rooms = new();
+    rooms.Add("living_room", new RoomData(){RoomName = "Living Room", RoomDescription = "A cozy living room with a fireplace and a TV.", AmbientRoomTemperature = 20});
+    rooms.Add("kitchen", new RoomData(){RoomName = "Kitchen", RoomDescription = "A kitchen with a fridge and a stove.", AmbientRoomTemperature = 20});
+    rooms.Add("bedroom", new RoomData(){RoomName = "Bedroom", RoomDescription = "A bedroom with a bed and a closet.", AmbientRoomTemperature = 20});
+    rooms.Add("bathroom", new RoomData(){RoomName = "Bathroom", RoomDescription = "A bathroom with a shower and a toilet.", AmbientRoomTemperature = 20});
+    rooms.Add("microwave", new RoomData(){RoomName = "Microwave", RoomDescription = "A microwave.", AmbientRoomTemperature = 1000});
+    GameManager.RoomManager.SaveRooms(rooms);*/
+
+    /*Dictionary<string, PetData> pets = new();
+    pets.Add("dog", new PetData(){SpeciesName = "Dog", Icon = "🐶", PreferredTemperature = 20, MaxBodyTemperature = 40, MinBodyTemperature = 10, MaxHappiness = 100, MaxHealth = 100, MaxHunger = 100, MaxEnergy = 100, MaxLove = 100,
+        Description = "The trusty companion of humans. Dogs are loyal and loving animals that require a lot of attention and care."});
+    pets.Add("cat", new PetData(){SpeciesName = "Cat", Icon = "🐱", PreferredTemperature = 20, MaxBodyTemperature = 40, MinBodyTemperature = 10, MaxHappiness = 100, MaxHealth = 100, MaxHunger = 100, MaxEnergy = 100, MaxLove = 100,
+        Description = "The independent feline. Cats are known for their playful and curious nature. They require a lot of attention and care."});
+    pets.Add("fish", new PetData(){SpeciesName = "Fish", Icon = "🐟", PreferredTemperature = 20, MaxBodyTemperature = 40, MinBodyTemperature = 10, MaxHappiness = 100, MaxHealth = 100, MaxHunger = 100, MaxEnergy = 100, MaxLove = 100,
+        Description = "The aquatic pet. Fish are low maintenance pets that require a clean tank and regular feeding."});
+    pets.Add("bird", new PetData(){SpeciesName = "Bird", Icon = "🐦", PreferredTemperature = 20, MaxBodyTemperature = 40, MinBodyTemperature = 10, MaxHappiness = 100, MaxHealth = 100, MaxHunger = 100, MaxEnergy = 100, MaxLove = 100,
+        Description = "The chirpy companion. Birds are social animals that require a lot of attention and care."});
+    GameManager.PetManager.SavePets(pets);*/
 
 
-        Renderer.Start(new MainMenu());
-        ConsoleKeyInfo key = Console.ReadKey();
-    }
+    Renderer.Start(new MainMenu());
+    ConsoleKeyInfo key = Console.ReadKey();
+  }
 }
