@@ -75,7 +75,7 @@ public class GameManager
             try
             {
                 GameSave data = deserializer.Deserialize<GameSave>(yaml);
-                Console.WriteLine(data);
+                //Console.WriteLine(data);
                 gameData = data.ToGameData() ?? throw new Exception();
             }
             catch (Exception e)
