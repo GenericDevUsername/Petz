@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using petzweb.Views;
+using Spectre.Console;
 
 namespace petzweb.ViewModel;
 
@@ -50,6 +51,7 @@ public static class Renderer
                 // only resize once if the user has resized the console in the last 500ms
                 if (Console.WindowWidth != lastWidth || Console.WindowHeight != lastHeight)
                 {
+                    Console.Clear();
                     lastWidth = Console.WindowWidth;
                     lastHeight = Console.WindowHeight;
                     lastResize = DateTime.Now;
