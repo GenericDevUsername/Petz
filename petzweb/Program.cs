@@ -68,6 +68,5 @@ internal abstract class Program
 
 
     Renderer.Start(new MainMenu());
-    ConsoleKeyInfo key = Console.ReadKey();
   }
 }

@@ -7,7 +7,7 @@ namespace petzweb.ViewModel;
 public static class Renderer
 {
     private static bool Initialised { get; set; }
-    private static IView? CurrentView { get; set; }
+    internal static IView? CurrentView { get; set; }
     private static Thread? InputThread { get; set; }
     private static Thread? ConsoleResizeListener { get; set; }
 
@@ -31,7 +31,7 @@ public static class Renderer
         {
             while (Initialised)
             {
-                ConsoleKeyInfo key = Console.ReadKey();
+                ConsoleKeyInfo key = Console.ReadKey(true);
                 CurrentView?.TakeInput(key);
                 CurrentView?.Render();
             }
