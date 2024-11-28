@@ -7,7 +7,8 @@ namespace petzweb.ViewModel;
 public static class Renderer
 {
     private static bool Initialised { get; set; }
-    internal static IView? CurrentView { get; set; }
+    // on change run init() on value
+    public static IView? CurrentView { get; private set; }
     private static Thread? InputThread { get; set; }
     private static Thread? ConsoleResizeListener { get; set; }
 
@@ -70,6 +71,7 @@ public static class Renderer
     {
         // change the current view
         CurrentView = view;
+        view?.Initialize();
         Console.Title = CurrentView?.ConsoleTitle ?? "Console";
         CurrentView?.Render();
     }

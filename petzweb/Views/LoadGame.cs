@@ -12,6 +12,11 @@ public class LoadGame : IView
   private int SelectedOption { get; set; }
   public string ConsoleTitle { get; set; } = "PetzGame - Load Game";
 
+  public void Initialize()
+  {
+      // empty
+  }
+
   public void Render()
   {
     FigletFont font = FigletFont.Load(@"Assets\Font\logo.flf");
