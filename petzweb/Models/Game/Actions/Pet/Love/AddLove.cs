@@ -2,8 +2,8 @@
 
 public class AddLove : ValueChangeAction
 {
-    public override void ChangeValue(GameData game, int amount)
-    {
-        game.Pet.Love = ClampValue(game.Pet.Love, amount, game.Pet.MaxLove);
-    }
+  public override void ChangeValue(GameData game, int amount)
+  {
+    game.Pet.Love = ClampValue(game.Pet.Love, amount, game.Pet.MaxLove);
+  }
 }

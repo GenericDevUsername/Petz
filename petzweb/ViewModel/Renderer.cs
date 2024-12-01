@@ -63,7 +63,10 @@ public static class Renderer
                 CurrentView?.Render();
                 resized = false;
             }
-        });
+        })
+        {
+            IsBackground = true
+        };
         ConsoleResizeListener.Start();
     }
 

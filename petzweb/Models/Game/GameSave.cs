@@ -6,14 +6,14 @@ namespace petzweb.Models.Game;
 
 public class GameSave
 {
-    public string GameId { get; internal set; } = Guid.NewGuid().ToString();
-    public DateTime LastSaved = DateTime.Now;
-    public GameSavePet Pet;
-    public GameSaveRoom Room;
-    public GameSaveInventory Inventory;
-    
-    public GameData? ToGameData()
-    {
-        return new GameData().LoadGameSave(this);
-    }
+  public GameSaveInventory Inventory;
+  public DateTime LastSaved = DateTime.Now;
+  public GameSavePet Pet;
+  public GameSaveRoom Room;
+  public string GameId { get; internal set; } = Guid.NewGuid().ToString();
+
+  public GameData? ToGameData()
+  {
+    return new GameData().LoadGameSave(this);
+  }
 }

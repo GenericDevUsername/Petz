@@ -4,46 +4,46 @@ namespace petzweb.Models.Pet;
 
 public class GameSavePet
 {
-    public string RegisteredPetId { get; set; }
-    public string Name { get; set; }
-    public DateTime DateCreated { get; set; }
-    public int Hunger { get; set; }
-    public int Happiness { get; set; }
-    public int Love { get; set; }
-    public int Health { get; set; }
-    public int Energy { get; set; }
-    public int BodyTemperature { get; set; }
-    public bool IsSick { get; set; }
+  public GameSavePet(GamePet pet)
+  {
+    RegisteredPetId = pet.RegisteredId;
+    Name = pet.Name;
+    DateCreated = pet.DateCreated;
+    Hunger = pet.Hunger;
+    Happiness = pet.Happiness;
+    Love = pet.Love;
+    Health = pet.Health;
+    Energy = pet.Energy;
+    BodyTemperature = pet.BodyTemperature;
+    IsSick = pet.IsSick;
+  }
 
-    public GameSavePet(GamePet pet)
+  public GameSavePet()
+  {
+  }
+
+  public string RegisteredPetId { get; set; }
+  public string Name { get; set; }
+  public DateTime DateCreated { get; set; }
+  public int Hunger { get; set; }
+  public int Happiness { get; set; }
+  public int Love { get; set; }
+  public int Health { get; set; }
+  public int Energy { get; set; }
+  public int BodyTemperature { get; set; }
+  public bool IsSick { get; set; }
+
+
+  public GamePet? ToGamePet()
+  {
+    try
     {
-        RegisteredPetId = pet.RegisteredId;
-        Name = pet.Name;
-        DateCreated = pet.DateCreated;
-        Hunger = pet.Hunger;
-        Happiness = pet.Happiness;
-        Love = pet.Love;
-        Health = pet.Health;
-        Energy = pet.Energy;
-        BodyTemperature = pet.BodyTemperature;
-        IsSick = pet.IsSick;
+      RegisteredPet petData = GameManager.PetManager.GetPet(RegisteredPetId);
+      return new GamePet(this, petData);
     }
-    public GameSavePet()
+    catch (Exception)
     {
+      return null;
     }
-    
-    
-    
-    public GamePet? ToGamePet()
-    {
-        try
-        {
-            RegisteredPet petData = GameManager.PetManager.GetPet(RegisteredPetId);
-            return new GamePet(this, petData);
-        } 
-        catch (Exception e)
-        {
-            return null;
-        }
-    }
+  }
 }

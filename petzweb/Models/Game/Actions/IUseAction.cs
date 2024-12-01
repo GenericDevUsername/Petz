@@ -2,5 +2,5 @@
 
 public interface IUseAction
 {
-    void Execute(GameData game, Dictionary<string, string> parameters, VariableStore variableStore);
+  void Execute(GameData game, Dictionary<string, string> parameters, VariableStore variableStore);
 }

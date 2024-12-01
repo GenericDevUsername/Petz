@@ -158,7 +158,7 @@ public class LoadGame : IView
         }
         else
         {
-          // not implemented yet
+          Renderer.ChangeView(new GameMenuRoom(_saveFiles[SelectedOption]));
         }
         break;
     }

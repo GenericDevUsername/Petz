@@ -18,22 +18,30 @@ public class NewGame : IView
   private string? _selectedPet = null;
   private string? _confirmedPet = null;
   // cursor flash
-  private static Thread CursorFlasher => new(() =>
+  private readonly Thread _cursorFlasher;
+  private void CursorFunction()
   {
-      // flash cursor when _selectionIndex == 0
-      while (Renderer.CurrentView is NewGame)
+      do
       {
         if (_selectionIndex != 0) continue;
         _cursor = _cursor == "_" ? " " : "_";
-        Renderer.CurrentView.Render();
+        Renderer.CurrentView?.Render();
         Thread.Sleep(500);
-      } 
-
-  });
+      } while (Renderer.CurrentView == this);
+      _cursor = "_";
+  }
+  
+  public NewGame()
+  {
+    _cursorFlasher = new Thread(CursorFunction)
+    {
+      IsBackground = true
+    };
+  }
   
   public void Initialize()
   {
-    CursorFlasher.Start();
+    if (_cursorFlasher.ThreadState != ThreadState.Running) _cursorFlasher.Start();
   }
 
   public void Render()
@@ -70,7 +78,14 @@ public class NewGame : IView
     // Controls Panel
     Layout["LTop"].Update(new Panel(new Rows(
         new Markup(
-            @"[gray]Press [black on silver]/\[/] and [black on silver]\/[/] to select. [green]<enter>[/] to confirm.[/]"),
+          _selectionIndex switch
+          {
+            0 => @"[gray]Press [black on silver]/\[/] and [black on silver]\/[/] to select. [black on silver]<[/] and [black on silver]>[/] to move cursor. Keyboard to type. [green]<enter>[/] to confirm.[/]",
+            1 => @"[gray]Press [black on silver]/\[/], [black on silver]\/[/], [black on silver]<[/] and [black on silver]>[/] to select. [green]<enter>[/] to confirm.[/]",
+            2 => "[gray]Press [green]<enter>[/] to confirm.[/]"
+          }
+                
+        ),
         new Markup("[gray]Press [black on silver]<esc>[/] to return to the main menu.[/]"))).Expand());
 
     List<RegisteredPet> pets = GameManager.PetManager.GetPets();
@@ -136,21 +151,20 @@ public class NewGame : IView
 
     switch (key.Key)
     {
+      //case ConsoleKey.P:
       case ConsoleKey.Escape:
         Renderer.ChangeView(new MainMenu());
         break;
       case ConsoleKey.Enter:
         switch (_selectionIndex)
         {
-          case 0:
-            _selectionIndex = 1;
-            _selectedPet ??= pets[0].RegisteredId;
-            break;
           case 1:
+            //_selectionIndex = 2;
             _confirmedPet = _selectedPet;
             break;
           case 2 when _confirmedPet != null && _name.Count > 0:
-            Console.Beep();
+            //GameManager.PetManager.CreatePet(_confirmedPet, string.Join("", _name));
+            //Renderer.ChangeView(new GameMenu(
             break;
         }
         break;
@@ -247,6 +261,15 @@ public class NewGame : IView
       default:
         if (_selectionIndex > 0) break;
         if (!char.IsLetterOrDigit(key.KeyChar) && !char.IsSymbol(key.KeyChar) && !char.IsPunctuation(key.KeyChar) && key.KeyChar != ' ') break;
+        int formattedLength;
+        try
+        {
+          formattedLength = new Markup(string.Join("", _name)).Length;
+        } catch
+        {
+          formattedLength = string.Join("", _name).Length;
+        }
+        if (formattedLength >= 50) break;
         _name.Insert(_cursorIndex, key.KeyChar.ToString());
         _cursorIndex++;
         break;
