@@ -1,16 +1,48 @@
-﻿using petzweb.Models.Item;
+﻿using petzweb.Models.Game;
+using petzweb.Models.Item;
 
 namespace petzweb.Models.Inventory;
 
-public class InventoryItem(RegisteredItem item, int quantity, GameInventory inventory)
+public class InventoryItem
 {
-  public RegisteredItem Item { get; } = item;
-  private GameInventory Inventory { get; } = inventory;
-  public int CurrentUses { get; private set; }
-  public int Quantity { get; private set; } = quantity;
+  private RegisteredItem? Item { get; set;  }
+  public string RegisteredId;
+  private GameInventory Inventory { get; set; }
+  public int CurrentUses { get; set; }
+  public int Quantity { get; set; }
+
+  public InventoryItem(RegisteredItem item, int quantity, GameInventory inventory)
+  {
+    Item = item;
+    RegisteredId = item.RegisteredId;
+    Quantity = quantity;
+    Inventory = inventory;
+  }
+  
+  public InventoryItem()
+  {
+  }
+  
+  public void SetInventory(GameInventory inventory)
+  {
+    Inventory = inventory;
+  }
+  
+  public RegisteredItem GetItem()
+  {
+    return Item ??= GameManager.ItemManager.GetItem(RegisteredId);
+  }
+  
+  public void RegisterItem(RegisteredItem item)
+  {
+    if (Item != null) return;
+    Item = item;
+  }
 
   public void Add(int quantity)
   {
+    if (Item == null) GetItem();
+    if (Item == null) return;
     if (Quantity + quantity <= Item.MaxStackSize)
     {
       Quantity += quantity;
@@ -35,6 +67,8 @@ public class InventoryItem(RegisteredItem item, int quantity, GameInventory inve
 
   public void Use(int amount = 1)
   {
+    if (Item == null) GetItem();
+    if (Item == null) return;
     while (true)
     {
       if (CurrentUses + amount <= Item.MaxUses)
@@ -66,6 +100,8 @@ public class InventoryItem(RegisteredItem item, int quantity, GameInventory inve
 
   public void Repair(int amount = 1)
   {
+    if (Item == null) GetItem();
+    if (Item == null) return;
     while (true)
     {
       switch (CurrentUses - amount)
@@ -94,6 +130,8 @@ public class InventoryItem(RegisteredItem item, int quantity, GameInventory inve
 
   public bool Merge(InventoryItem inventoryItem)
   {
+    if (Item == null) GetItem();
+    if (Item == null) return false;
     if (Item != inventoryItem.Item) return false;
 
     int total = Quantity + inventoryItem.Quantity;

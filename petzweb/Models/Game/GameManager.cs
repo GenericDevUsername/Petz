@@ -20,18 +20,17 @@ public class GameManager
   public required GameData? Data { get; set; }
   public bool IsValid { get; private set; } = true;
 
-  public void Save()
+  public static void Save(GameData data)
   {
-    if (Data == null) return;
-    Data.LastSaved = DateTime.Now;
+    data.LastSaved = DateTime.Now;
     // Save the game to Program.GameSavesPath
     ISerializer serializer = new SerializerBuilder()
       .WithNamingConvention(CamelCaseNamingConvention.Instance)
       .Build();
 
-    string yaml = serializer.Serialize(Data.ToGameSave());
+    string yaml = serializer.Serialize(data.ToGameSave());
 
-    File.WriteAllText(Program.GameSavesPath + $"/{Data.GameId}.yml", yaml);
+    File.WriteAllText(Program.GameSavesPath + $"/{data.GameId}.yml", yaml);
   }
 
   public static GameManager? Load(string gameId)

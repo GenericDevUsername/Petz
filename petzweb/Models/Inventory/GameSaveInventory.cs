@@ -19,10 +19,16 @@ public class GameSaveInventory
 
   public GameInventory ToGameInventory(GameData game)
   {
-    return new GameInventory(game)
+    GameInventory inv = new GameInventory(game)
     {
       Coins = Coins,
       Items = Items
     };
+    foreach (InventoryItem t in inv.Items)
+    {
+      t.SetInventory(inv);
+    }
+
+    return inv;
   }
 }

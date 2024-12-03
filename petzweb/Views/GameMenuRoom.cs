@@ -12,11 +12,26 @@ public class GameMenuRoom(GameManager game) : IView
     private Layout? Layout { get; set; }
     private string[] Options { get; } = ["💾", "🏠", "🛒", "📦"];
     private GameManager Game { get; set; } = game;
+    private Thread _updaterThread;
     private int SelectedOption { get; set; }
     public string ConsoleTitle { get; set; } = "PetzGame - Game";
 
     public void Initialize()
     {
+        Game.Data?.Start();
+        
+        _updaterThread = new Thread(() =>
+        {
+            do
+            {
+                Render();
+                Thread.Sleep(1000);
+            } while (Renderer.CurrentView == this);
+        })
+        {
+            IsBackground = true
+        };
+        _updaterThread.Start();
     }
     
     public void Render()
@@ -38,8 +53,8 @@ public class GameMenuRoom(GameManager game) : IView
                                 new Layout("LR").Size(31)
                                     .SplitRows(
                                         new Layout("LRRoomTemp").Size(3),
-                                        new Layout("LRTop").MinimumSize(8).Invisible(),
-                                        new Layout("LRBottom").MinimumSize(8)
+                                        new Layout("LRStats").MinimumSize(8),
+                                        new Layout("LRBottom").MinimumSize(8).Invisible()
                                         )
                             )
                     )
@@ -72,11 +87,11 @@ public class GameMenuRoom(GameManager game) : IView
         // *(red) = outside the safe zone
         StringBuilder tempBar = new StringBuilder();
         const int stringLength = 27;
-        int startTemp = (Game.Data?.Room.CurrentTemperature ?? 0) - ((stringLength -1) / 2);
-        int endTemp = (Game.Data?.Room.CurrentTemperature ?? 0) + ((stringLength -1) / 2);
+        int startTemp = (int)Math.Round((Game.Data?.Room.CurrentTemperature ?? 0) - ((stringLength -1) / 2), 0);
+        int endTemp = (int)Math.Round((Game.Data?.Room.CurrentTemperature ?? 0) + ((stringLength -1) / 2));
         for (int i = startTemp; i <= endTemp; i++)
         {
-            string symbol = i == Game.Data?.Room.CurrentTemperature ? "|" : "*";
+            string symbol = i == (int)Math.Round(Game.Data?.Room.CurrentTemperature ?? 0, 0) ? "|" : "*";
             if (i < Game.Data?.Pet.MinBodyTemperature || i > Game.Data?.Pet.MaxBodyTemperature)
             {
                 tempBar.Append($"[red]{symbol}[/]");
@@ -101,7 +116,26 @@ public class GameMenuRoom(GameManager game) : IView
                 Border = BoxBorder.Rounded,
                 BorderStyle = new Style(Color.White),
                 Width = 20,
-                Header = new PanelHeader($"{Game.Data?.Room.CurrentTemperature ?? 0}°C")
+                Header = new PanelHeader($"Room Temp: {Math.Round(Game.Data?.Room.CurrentTemperature ?? 0, 1)}°C")
+            }.Expand()
+        );
+        
+        Layout["LRStats"].Update(
+            new Panel(
+                new Rows(
+                    new Rule($"{Game.Data?.Pet.Name}'s Stats"),
+                    new Markup($"Health: {new PercentageBarComponent(Game.Data.Pet.MaxHealth, Game.Data.Pet.Health, 24 - "Health: ".Length, Color.Green).Render()}"),
+                    new Markup($"Hunger: {new PercentageBarComponent(Game.Data.Pet.MaxHunger, Game.Data.Pet.Hunger, 24 - "Hunger: ".Length, Color.Yellow).Render()}"),
+                    new Markup($"Happiness: {new PercentageBarComponent(Game.Data.Pet.MaxHappiness, Game.Data.Pet.Happiness, 24 - "Happiness: ".Length, Color.Red).Render()}"),
+                    new Rule($"Controls"),
+                    new Markup("[black on silver]-[/] [black on silver]+[/] - Change Temp"),
+                    new Rule()
+                )
+            )
+            {
+                Border = BoxBorder.Rounded,
+                BorderStyle = new Style(Color.White),
+                Header = new PanelHeader("Pet Stats")
             }.Expand()
         );
         
@@ -151,6 +185,16 @@ public class GameMenuRoom(GameManager game) : IView
             case ConsoleKey.NumPad4:
                 Renderer.ChangeView(new GameMenuInventory(Game));
                 break;
+            
+            case ConsoleKey.OemMinus:
+            case ConsoleKey.Subtract:
+                Game.Data.Room.CurrentTemperature -= 0.5f;
+                break;
+            
+            case ConsoleKey.OemPlus:
+            case ConsoleKey.Add:
+                Game.Data.Room.CurrentTemperature += 0.5f;
+                break;    
         }
     }
 }

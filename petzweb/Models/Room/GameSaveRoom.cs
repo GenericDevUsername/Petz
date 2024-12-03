@@ -14,7 +14,7 @@ public class GameSaveRoom
   {
   }
 
-  public int CurrentTemperature { get; private set; }
+  public float CurrentTemperature { get; private set; }
   public string RegisteredRoomId { get; set; }
 
   public GameRoom? ToGameRoom()

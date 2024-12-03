@@ -16,8 +16,8 @@ public class GameInventory(GameData game)
 
   public void AddItem(RegisteredItem item, int quantity)
   {
-    InventoryItem? existingItem = Items.FirstOrDefault(i => i.Item == item);
-    if (existingItem != null)
+    InventoryItem? existingItem = Items.FirstOrDefault(i => i.GetItem() == item);
+    if (existingItem != null && existingItem.Quantity + quantity <= item.MaxStackSize)
       existingItem.Add(quantity);
     else
       Items.Add(new InventoryItem(item, quantity, this));

@@ -55,12 +55,12 @@ public class LoadGame : IView
           : new TableColumn(new Markup($"{saveFile.Data.Pet.Icon ?? "#"} {saveFile.Data.Pet.Name}")));
       table.AddColumn(
           saveFile.IsValid
-              ? new TableColumn(new Markup($"[maroon]❤[/]  [red]{saveFile.Data.Pet.Love}[/]"))
-              : new TableColumn(new Markup(saveFile.Data.Pet.Name)));
+              ? new TableColumn(new Markup($"[maroon]❤[/]  [red]{saveFile.Data?.Pet.Love.ToString() ?? "???"}[/]"))
+              : new TableColumn(new Markup(saveFile.Data?.Pet?.Name ?? "???")));
       table.AddRow(
           new Markup(
-              $"[blue]Last Played:[/] {saveFile.Data.LastSaved.ToShortDateString()} {saveFile.Data.LastSaved.ToShortTimeString()}"),
-          new Markup($"{saveFile.Data.Room.RoomName ?? ""}"));
+              $"[blue]Last Played:[/] {saveFile.Data?.LastSaved.ToShortDateString() ?? "Unknown"} {saveFile.Data?.LastSaved.ToShortTimeString() ?? ""}"),
+          new Markup($"{saveFile.Data?.Room.RoomName ?? "Unknown Room"}"));
       table.Border = TableBorder.Rounded;
       table.BorderStyle = selectedOptionDisplay == i
           ?

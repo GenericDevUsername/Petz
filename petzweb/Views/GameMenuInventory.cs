@@ -1,4 +1,5 @@
-﻿using petzweb.Models.Game;
+﻿using System.Text;
+using petzweb.Models.Game;
 using petzweb.ViewModel;
 using Spectre.Console;
 using Spectre.Console.Extensions;
@@ -11,11 +12,24 @@ public class GameMenuInventory(GameManager game) : IView
     private Layout? Layout { get; set; }
     private string[] Options { get; } = ["💾", "🏠", "🛒", "📦"];
     private GameManager Game { get; set; } = game;
+    private Thread _updaterThread;
     private int SelectedOption { get; set; }
     public string ConsoleTitle { get; set; } = "PetzGame - Game";
 
     public void Initialize()
     {
+        _updaterThread = new Thread(() =>
+        {
+            do
+            {
+                Render();
+                Thread.Sleep(1000);
+            } while (Renderer.CurrentView == this);
+        })
+        {
+            IsBackground = true
+        };
+        _updaterThread.Start();
     }
     
     public void Render()
@@ -34,9 +48,10 @@ public class GameMenuInventory(GameManager game) : IView
                                         new Layout("LLTop"),
                                         new Layout("LLBottom").MinimumSize(5).Size(5)
                                     ),
-                                new Layout("LR").Size(30)
+                                new Layout("LR").Size(31)
                                     .SplitRows(
-                                        new Layout("LRTop").MinimumSize(8),
+                                        new Layout("LRRoomTemp").Size(3),
+                                        new Layout("LRStats").MinimumSize(8),
                                         new Layout("LRBottom").MinimumSize(8).Invisible()
                                         )
                             )
@@ -54,10 +69,73 @@ public class GameMenuInventory(GameManager game) : IView
         // add menu panel
         Layout["LLTop"].Update(
             new Panel(
-                ""
+                Game.Data.Inventory.Items.Count > 0 ? new Rows(Game.Data.Inventory.Items.Select(item => new Panel(new Markup($"{item.Quantity}x {item.GetItem().Icon} {item.GetItem().Name}"))
+                {
+                    Border = BoxBorder.Rounded,
+                    BorderStyle = new Style(Color.White),
+                })).Collapse() : new Markup("No items in inventory...")
             )
             {
                 Header = new PanelHeader("Inventory")
+            }.Expand()
+        );
+        
+        // generate temperature string 
+        // example output: "*************|*************"
+        // | = current temp always centered
+        // * = room temp
+        // *(green) = room temp within range of Game.Data?.Pet.MinBodyTemp and Game.Data?.Pet.MaxBodyTemp
+        // *(yellow) = 3 padding on each side of the safe zone
+        // *(red) = outside the safe zone
+        StringBuilder tempBar = new StringBuilder();
+        const int stringLength = 27;
+        int startTemp = (int)Math.Round((Game.Data?.Room.CurrentTemperature ?? 0) - ((stringLength -1) / 2), 0);
+        int endTemp = (int)Math.Round((Game.Data?.Room.CurrentTemperature ?? 0) + ((stringLength -1) / 2));
+        for (int i = startTemp; i <= endTemp; i++)
+        {
+            string symbol = i == (int)Math.Round(Game.Data?.Room.CurrentTemperature ?? 0, 0) ? "|" : "*";
+            if (i < Game.Data?.Pet.MinBodyTemperature || i > Game.Data?.Pet.MaxBodyTemperature)
+            {
+                tempBar.Append($"[red]{symbol}[/]");
+            }
+            else if (i < Game.Data?.Pet.MinBodyTemperature + 3 || i > Game.Data?.Pet.MaxBodyTemperature - 3)
+            {
+                tempBar.Append($"[yellow]{symbol}[/]");
+            }
+            else
+            {
+                tempBar.Append($"[green]{symbol}[/]");
+            }
+        }
+            
+        
+        
+        Layout["LRRoomTemp"].Update(
+            new Panel(
+                Align.Center(new Markup(tempBar.ToString()), VerticalAlignment.Middle)
+            )
+            {
+                Border = BoxBorder.Rounded,
+                BorderStyle = new Style(Color.White),
+                Width = 20,
+                Header = new PanelHeader($"Room Temp: {Math.Round(Game.Data?.Room.CurrentTemperature ?? 0, 1)}°C")
+            }.Expand()
+        );
+        
+        Layout["LRStats"].Update(
+            new Panel(
+                new Rows(
+                    new Rule($"{Game.Data?.Pet.Name}'s Stats"),
+                    new Markup($"Health: {new PercentageBarComponent(Game.Data.Pet.MaxHealth, Game.Data.Pet.Health, 24 - "Health: ".Length, Color.Green).Render()}"),
+                    new Markup($"Hunger: {new PercentageBarComponent(Game.Data.Pet.MaxHunger, Game.Data.Pet.Hunger, 24 - "Hunger: ".Length, Color.Yellow).Render()}"),
+                    new Markup($"Happiness: {new PercentageBarComponent(Game.Data.Pet.MaxHappiness, Game.Data.Pet.Happiness, 24 - "Happiness: ".Length, Color.Red).Render()}"),
+                    new Rule()
+                )
+            )
+            {
+                Border = BoxBorder.Rounded,
+                BorderStyle = new Style(Color.White),
+                Header = new PanelHeader("Pet Stats")
             }.Expand()
         );
         
