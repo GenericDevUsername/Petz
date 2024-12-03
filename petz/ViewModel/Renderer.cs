@@ -1,0 +1,93 @@
+﻿using System.Text;
+using petz.Views;
+using Spectre.Console;
+
+namespace petz.ViewModel;
+
+public static class Renderer
+{
+    private static bool Initialised { get; set; }
+    // on change run init() on value
+    public static IView? CurrentView { get; private set; }
+    private static Thread? InputThread { get; set; }
+    private static Thread? ConsoleResizeListener { get; set; }
+
+    public static void Start(IView? view)
+    {
+        // prevent multiple initialisations
+        if (Initialised) throw new InvalidOperationException("Renderer has already been initialised.");
+        Initialised = true;
+        Console.Clear();
+        Console.CursorVisible = false;
+
+
+        // Initialise the view window
+        CurrentView = view ?? throw new ArgumentNullException(nameof(view));
+        CurrentView.Render();
+        Console.Title = CurrentView?.ConsoleTitle ?? "Console";
+
+
+        // create a new thread to listen for input
+        InputThread = new Thread(() =>
+        {
+            while (Initialised)
+            {
+                ConsoleKeyInfo key = Console.ReadKey(true);
+                CurrentView?.TakeInput(key);
+                CurrentView?.Render();
+            }
+        });
+        InputThread.Start();
+
+        // create a new thread to listen for console resizes
+        ConsoleResizeListener = new Thread(() =>
+        {
+            int lastWidth = Console.WindowWidth;
+            int lastHeight = Console.WindowHeight;
+            DateTime lastResize = DateTime.Now;
+            bool resized = false;
+            while (Initialised)
+            {
+                // only resize once if the user has resized the console in the last 500ms
+                if (Console.WindowWidth != lastWidth || Console.WindowHeight != lastHeight)
+                {
+                    Console.Clear();
+                    lastWidth = Console.WindowWidth;
+                    lastHeight = Console.WindowHeight;
+                    lastResize = DateTime.Now;
+                    resized = true;
+                }
+
+                if (DateTime.Now - lastResize <= TimeSpan.FromMilliseconds(100)) continue;
+                if (!resized) continue;
+                CurrentView?.Render();
+                resized = false;
+            }
+        })
+        {
+            IsBackground = true
+        };
+        ConsoleResizeListener.Start();
+    }
+
+    public static void ChangeView(IView? view)
+    {
+        // change the current view
+        CurrentView = view;
+        view?.Initialize();
+        Console.Title = CurrentView?.ConsoleTitle ?? "Console";
+        CurrentView?.Render();
+    }
+
+    public static void Stop()
+    {
+        // stop the input thread
+        Initialised = false;
+
+        // clear the console
+        Console.Clear();
+        Console.ResetColor();
+        Console.Title = "Console";
+        Console.CursorVisible = true;
+    }
+}
