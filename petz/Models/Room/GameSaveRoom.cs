@@ -19,7 +19,7 @@ public class GameSaveRoom
 
   public GameRoom? ToGameRoom()
   {
-    RegisteredRoom? roomData = GameManager.RoomManager.GetRoom(RegisteredRoomId);
+    RegisteredRoom? roomData = GameManager.Rooms.GetRoom(RegisteredRoomId);
     return roomData == null ? null : new GameRoom(roomData, CurrentTemperature);
   }
 }

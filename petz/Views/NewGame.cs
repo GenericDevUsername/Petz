@@ -88,7 +88,7 @@ public class NewGame : IView
         ),
         new Markup("[gray]Press [black on silver]<esc>[/] to return to the main menu.[/]"))).Expand());
 
-    List<RegisteredPet> pets = GameManager.PetManager.GetPets();
+    List<RegisteredPet> pets = GameManager.Pets.GetPets();
     Markup name;
     try
     {
@@ -140,7 +140,7 @@ public class NewGame : IView
 
   public void TakeInput(ConsoleKeyInfo key)
   {
-    List<RegisteredPet> pets = GameManager.PetManager.GetPets();
+    List<RegisteredPet> pets = GameManager.Pets.GetPets();
 
     int petsPerRow = (Console.WindowWidth - 34) / 7;
     // edge case for padding merging with last pet (7 is pet plus space, but if padding aligns with last pet, it will be 6)
@@ -163,8 +163,8 @@ public class NewGame : IView
             _confirmedPet = _selectedPet;
             break;
           case 2 when _confirmedPet != null && _name.Count > 0:
-            //GameManager.PetManager.CreatePet(_confirmedPet, string.Join("", _name));
-            //Renderer.ChangeView(new GameMenu(
+            GameManager game = GameManager.CreateNewGame(_confirmedPet, string.Join("", _name));
+            Renderer.ChangeView(new GameMenuRoom(game));
             break;
         }
         break;

@@ -11,80 +11,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b47df19c-ea31-49eb-87d5-9743449f082e" name="Changes" comment="inv">
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.Petz/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.Petz/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.Petz/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.Petz/.idea/indexLayout.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.Petz/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.PetzClassTesting/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/petz/Models/DefaultFiles.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/petz_testing/UnitTest1.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/petz_testing/petz_testing.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.PetzClassTesting/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.PetzClassTesting/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.PetzClassTesting/.idea/indexLayout.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.PetzClassTesting/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PetzClassTesting.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Petz.sln" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Assets/Font/logo.flf" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Assets/Font/logo.flf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/Actions/ActionRegistry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/Actions/ActionRegistry.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/Actions/IUseAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/Actions/IUseAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/Actions/OnUseAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/Actions/OnUseAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/Actions/Pet/BodyTemp/AddTemperature.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/Actions/Pet/BodyTemp/AddTemperature.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/Actions/Pet/BodyTemp/RemoveTemperature.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/Actions/Pet/BodyTemp/RemoveTemperature.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/Actions/Pet/Coins/AddCoins.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/Actions/Pet/Coins/AddCoins.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/Actions/Pet/Coins/RemoveCoins.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/Actions/Pet/Coins/RemoveCoins.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/Actions/Pet/Energy/AddEnergy.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/Actions/Pet/Energy/AddEnergy.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/Actions/Pet/Energy/RemoveEnergy.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/Actions/Pet/Energy/RemoveEnergy.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/Actions/Pet/Happiness/AddHappiness.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/Actions/Pet/Happiness/AddHappiness.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/Actions/Pet/Happiness/RemoveHappiness.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/Actions/Pet/Happiness/RemoveHappiness.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/Actions/Pet/Health/AddHealth.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/Actions/Pet/Health/AddHealth.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/Actions/Pet/Health/RemoveHealth.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/Actions/Pet/Health/RemoveHealth.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/Actions/Pet/Hunger/AddHunger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/Actions/Pet/Hunger/AddHunger.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/Actions/Pet/Hunger/RemoveHunger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/Actions/Pet/Hunger/RemoveHunger.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/Actions/Pet/IsSick/CureIllness.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/Actions/Pet/IsSick/CureIllness.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/Actions/Pet/IsSick/MakeSick.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/Actions/Pet/IsSick/MakeSick.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/Actions/Pet/Love/AddLove.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/Actions/Pet/Love/AddLove.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/Actions/Pet/Love/RemoveLove.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/Actions/Pet/Love/RemoveLove.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/Actions/Pet/ValueChangeAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/Actions/Pet/ValueChangeAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/Actions/SetAliasesAttribute.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/Actions/SetAliasesAttribute.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/Actions/UseActionExecutor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/Actions/UseActionExecutor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/Actions/Variable/SetVariable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/Actions/Variable/SetVariable.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/Actions/Variable/VariableAdd.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/Actions/Variable/VariableAdd.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/Actions/Variable/VariableMath.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/Actions/Variable/VariableMath.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/Actions/Variable/VariableSubtract.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/Actions/Variable/VariableSubtract.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/Actions/Variable/VariableUnset.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/Actions/Variable/VariableUnset.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/Actions/VariableStore.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/Actions/VariableStore.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/GameData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/GameData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/GameManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Game/GameSave.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Game/GameSave.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Inventory/GameInventory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Inventory/GameInventory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Inventory/GameSaveInventory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Inventory/GameSaveInventory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Inventory/InventoryItem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Inventory/InventoryItem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Item/ItemData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Item/ItemData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Item/ItemManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Item/ItemManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Item/RegisteredItem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Item/RegisteredItem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Pet/GamePet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Pet/GamePet.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Pet/GameSavePet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Pet/GameSavePet.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Pet/PetData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Pet/PetData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Pet/PetManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Pet/PetManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Pet/RegisteredPet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Pet/RegisteredPet.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Room/GameRoom.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Room/GameRoom.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Room/GameSaveRoom.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Room/GameSaveRoom.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Room/RegisteredRoom.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Room/RegisteredRoom.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Room/RoomData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Room/RoomData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Models/Room/RoomManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Models/Room/RoomManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/ViewModel/Components/PercentageBarComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/ViewModel/Components/PercentageBarComponent.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/ViewModel/Renderer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/ViewModel/Renderer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Views/GameMenuInventory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Views/GameMenuInventory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Views/GameMenuRoom.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Views/GameMenuRoom.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Views/GameMenuSave.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Views/GameMenuSave.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Views/GameMenuShop.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Views/GameMenuShop.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Views/IView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Views/IView.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Views/LoadGame.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Views/LoadGame.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Views/MainMenu.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Views/MainMenu.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/Views/NewGame.cs" beforeDir="false" afterPath="$PROJECT_DIR$/petz/Views/NewGame.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petzweb/petzweb.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/petz/petz.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.PetzClassTesting/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PetzClassTesting/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -246,7 +173,7 @@
       <workItem from="1732888849193" duration="3315000" />
       <workItem from="1733050772360" duration="21533000" />
       <workItem from="1733144554831" duration="21192000" />
-      <workItem from="1733229618022" duration="18628000" />
+      <workItem from="1733229618022" duration="20660000" />
     </task>
     <task id="LOCAL-00001" summary="fvd">
       <option name="closed" value="true" />
@@ -320,7 +247,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733073203911</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="inv">
+      <option name="closed" value="true" />
+      <created>1733258133241</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1733258133241</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

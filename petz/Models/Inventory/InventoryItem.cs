@@ -30,13 +30,7 @@ public class InventoryItem
   
   public RegisteredItem GetItem()
   {
-    return Item ??= GameManager.ItemManager.GetItem(RegisteredId);
-  }
-  
-  public void RegisterItem(RegisteredItem item)
-  {
-    if (Item != null) return;
-    Item = item;
+    return Item ??= GameManager.Items.GetItem(RegisteredId);
   }
 
   public void Add(int quantity)
@@ -106,62 +100,5 @@ public class InventoryItem
 
       break;
     }
-  }
-
-  public void Repair(int amount = 1)
-  {
-    if (Item == null) GetItem();
-    if (Item == null) return;
-    while (true)
-    {
-      switch (CurrentUses - amount)
-      {
-        case >= 0:
-          CurrentUses -= amount;
-          break;
-        case < 0:
-        {
-          int remainder = amount - CurrentUses;
-          CurrentUses = Item.MaxUses;
-          Quantity++;
-          if (remainder > 0)
-          {
-            amount = remainder;
-            continue;
-          }
-
-          break;
-        }
-      }
-
-      break;
-    }
-  }
-
-  public bool Merge(InventoryItem inventoryItem)
-  {
-    if (Item == null) GetItem();
-    if (Item == null) return false;
-    if (Item != inventoryItem.Item) return false;
-
-    int total = Quantity + inventoryItem.Quantity;
-    if (total <= Item.MaxStackSize)
-    {
-      Quantity = total;
-      Repair(inventoryItem.Item.MaxUses - inventoryItem.CurrentUses);
-      inventoryItem.SetQuantity(0);
-      return true;
-    }
-
-    if (total > Item.MaxStackSize)
-    {
-      int remainder = total - Item.MaxStackSize;
-      Quantity = Item.MaxStackSize;
-      Repair(inventoryItem.Item.MaxUses - inventoryItem.CurrentUses);
-      inventoryItem.SetQuantity(remainder);
-      return true;
-    }
-
-    return false;
   }
 }

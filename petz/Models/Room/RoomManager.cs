@@ -9,7 +9,7 @@ public class RoomManager
 
   internal void LoadRooms()
   {
-    string yamlFile = ReadItemsFile();
+    string yamlFile = ReadFile();
 
     // Load items from rooms.yml file
     IDeserializer deserializer = new DeserializerBuilder()
@@ -41,26 +41,11 @@ public class RoomManager
       $"[DEBUG] Registered {registeredRoomCount} rooms: {string.Join(", ", _rooms.Values.Select(room => room.RoomName))}");
   }
 
-  public void SaveRooms(Dictionary<string, RoomData> rooms)
+  private static string ReadFile()
   {
-    ISerializer serializer = new SerializerBuilder()
-      .WithNamingConvention(CamelCaseNamingConvention.Instance)
-      .Build();
-
-    string yaml = serializer.Serialize(rooms);
-
-    File.WriteAllText(Program.GameDataPath + "/rooms.yml", yaml);
-  }
-
-  private static string ReadItemsFile()
-  {
-    if (!File.Exists(Program.GameDataPath + "/rooms.yml"))
-    {
-      File.WriteAllText(Program.GameDataPath + "/rooms.yml", DefaultFiles.Rooms);
-      return string.Empty;
-    }
-
-    return File.ReadAllText(Program.GameDataPath + "/rooms.yml");
+    if (File.Exists(Program.GameDataPath + "/rooms.yml")) return File.ReadAllText(Program.GameDataPath + "/rooms.yml");
+    File.WriteAllText(Program.GameDataPath + "/rooms.yml", DefaultFiles.Rooms);
+    return string.Empty;
   }
 
   public RegisteredRoom? GetRoom(string registeredId)

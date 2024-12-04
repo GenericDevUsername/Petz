@@ -22,15 +22,9 @@ public class GameInventory(GameData game)
     else
       Items.Add(new InventoryItem(item, quantity, this));
   }
-
-
+  
   public void ModifyCoins(int amount)
   {
     Coins += Coins - amount < 0 ? 0 : amount;
-  }
-
-  public void SetCoins(int amount)
-  {
-    Coins = amount;
   }
 }

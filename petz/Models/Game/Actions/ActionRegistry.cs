@@ -4,16 +4,28 @@ namespace petz.Models.Game.Actions;
 
 public class ActionRegistry
 {
-  private readonly Dictionary<string, IUseAction?> _registry = new();
+  private static readonly Dictionary<string, IUseAction?> Registry = new();
+  private bool _populated = false;
 
   public ActionRegistry()
   {
     PopulateActionRegistry();
-    Program.Log("Action registry populated with " + _registry.Count + " actions.");
-    Program.Log("Action registry: " + string.Join(", ", _registry.Keys));
+    Program.Log("Action registry populated with " + Registry.Count + " actions.");
+    Program.Log("Action registry: " + string.Join(", ", Registry.Keys));
   }
+  
+  public static int Count => Registry.Count;
+  public static IEnumerable<string> Keys => Registry.Keys;
 
-  private void PopulateActionRegistry()
+  public static void Initialize()
+  {
+    Program.Log("Initializing action registry...");
+    PopulateActionRegistry();
+    Program.Log("Action registry populated with " + Registry.Count + " actions.");
+    Program.Log("Action registry: " + string.Join(", ", Registry.Keys));
+  }
+  
+  private static void PopulateActionRegistry()
   {
     Type interfaceType = typeof(IUseAction);
     IEnumerable<Type> types = AppDomain.CurrentDomain.GetAssemblies()
@@ -25,26 +37,26 @@ public class ActionRegistry
       IUseAction? instance = (IUseAction?)Activator.CreateInstance(type);
 
       // Add default alias (class name)
-      _registry[type.Name.ToLowerInvariant()] = instance;
+      Registry[type.Name.ToLowerInvariant()] = instance;
 
       // Add aliases from attributes if present
       IEnumerable<SetAliasesAttribute> aliases = type.GetCustomAttributes<SetAliasesAttribute>();
       foreach (SetAliasesAttribute alias in aliases)
       foreach (string aliasName in alias.Aliases)
-        _registry[aliasName.ToLowerInvariant()] = instance;
+        Registry[aliasName.ToLowerInvariant()] = instance;
     }
   }
 
   public void AddActionWithAliases(IUseAction? action, params string[] aliases)
   {
-    foreach (string alias in aliases) _registry[alias] = action;
+    foreach (string alias in aliases) Registry[alias] = action;
   }
 
   // allow out variable to be used
   public IUseAction? GetAction(string actionName, out IUseAction? action)
   {
-    return _registry.TryGetValue(actionName.ToLowerInvariant(), out action)
+    return Registry.TryGetValue(actionName.ToLowerInvariant(), out action)
       ? action
-      : _registry.GetValueOrDefault(actionName);
+      : Registry.GetValueOrDefault(actionName);
   }
 }

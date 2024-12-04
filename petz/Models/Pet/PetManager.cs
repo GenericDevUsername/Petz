@@ -9,7 +9,7 @@ public class PetManager
 
   internal void LoadPets()
   {
-    string yamlFile = ReadItemsFile();
+    string yamlFile = ReadFile();
 
     // Load items from rooms.yml file
     IDeserializer deserializer = new DeserializerBuilder()
@@ -49,7 +49,7 @@ public class PetManager
     File.WriteAllText(Program.GameDataPath + "/pets.yml", yaml);
   }
 
-  private static string ReadItemsFile()
+  private static string ReadFile()
   {
     if (!File.Exists(Program.GameDataPath + "/pets.yml"))
     {

@@ -9,7 +9,7 @@ public class ItemManager
 
   internal void LoadItems()
   {
-    string yamlFile = ReadItemsFile();
+    string yamlFile = ReadFile();
 
     // Load items from data/items.yml file
     IDeserializer deserializer = new DeserializerBuilder()
@@ -36,15 +36,12 @@ public class ItemManager
     Program.Log($"[DEBUG] Registered {registeredItemCount} items");
   }
 
-  private static string ReadItemsFile()
+  private static string ReadFile()
   {
-    if (!File.Exists(Program.GameDataPath + "/items.yml"))
-    {
-      File.WriteAllText(Program.GameDataPath + "/items.yml", DefaultFiles.Items);
-      return string.Empty;
-    }
+    if (File.Exists(Program.GameDataPath + "/items.yml")) return File.ReadAllText(Program.GameDataPath + "/items.yml");
+    File.WriteAllText(Program.GameDataPath + "/items.yml", DefaultFiles.Items);
+    return string.Empty;
 
-    return File.ReadAllText(Program.GameDataPath + "/items.yml");
   }
 
   public RegisteredItem GetItem(string registeredId)

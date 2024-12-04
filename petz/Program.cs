@@ -1,7 +1,9 @@
 ﻿using System.Text;
 using petz.Models.Game;
+using petz.Models.Game.Actions;
 using petz.ViewModel;
 using petz.Views;
+using Spectre.Console;
 
 namespace petz;
 
@@ -29,21 +31,41 @@ internal abstract class Program
   private static void Main(string[] args)
   {
     Console.OutputEncoding = Encoding.UTF8;
-    GameManager.Initialize();
+    // Asynchronous
+    AnsiConsole.Status()
+    .Start("Loading game data...", ctx =>
+    {
+      // Omitted
+      ctx.Status("Loading game manager...");
+      GameManager.Initialize();
+      AnsiConsole.MarkupLine(@$"[grey]LOG:[/] [white]Loaded[/] [green]{GameManager.Pets.GetPets().Count}[/] [white]pets[/]");
+      AnsiConsole.MarkupLine(@$"[grey]LOG:[/] [white]Loaded[/] [green]{GameManager.Rooms.GetRooms().Count}[/] [white]rooms[/]");
+      AnsiConsole.MarkupLine(@$"[grey]LOG:[/] [white]Loaded[/] [green]{GameManager.Items.GetItems().Count}[/] [white]items[/]");
+      
+      ctx.Status("Loading action registry...");
+      ActionRegistry.Initialize();
+      AnsiConsole.MarkupLine(@$"[grey]LOG:[/] [white]Loaded[/] [green]{ActionRegistry.Count}[/] [white]actions[/]");
+      AnsiConsole.MarkupLine(@$"[grey]LOG:[/] [white]{string.Join(", ", ActionRegistry.Keys).EscapeMarkup()}[/]");
+      
+      ctx.Status("Finishing up...");
+      AnsiConsole.MarkupLine(@"[grey]LOG:[/] [white]Initialising renderer...[/]");
+    });
+
+    
 
     /*RegisteredRoom? room = GameManager.RoomManager.GetRoom("living_room");
     int i = 0;
     while (i < 10)
     {
-        Random random = new Random();
-        GameManager saveToMake = new GameManager()
-        {
-            Data = new GameData()
+      Random random = new Random();
+      GameManager saveToMake = new GameManager()
+      {
+         Data = new GameData()
+         {
+            Pet = new GamePet(GameManager.PetManager.GetPet("dog"))
             {
-                Pet = new GamePet(GameManager.PetManager.GetPet("dog"))
-                {
-                    Name = random.Next(0, 100).ToString(),
-                    Love = random.Next(0, 14),
+               Name = random.Next(0, 100).ToString(),
+               Love = random.Next(0, 14),
                     Happiness = random.Next(1, 100),
                     Hunger = random.Next(1, 100),
                     Health = random.Next(1, 100),

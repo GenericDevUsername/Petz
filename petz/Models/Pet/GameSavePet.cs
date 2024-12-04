@@ -38,7 +38,7 @@ public class GameSavePet
   {
     try
     {
-      RegisteredPet petData = GameManager.PetManager.GetPet(RegisteredPetId);
+      RegisteredPet petData = GameManager.Pets.GetPet(RegisteredPetId);
       return new GamePet(this, petData);
     }
     catch (Exception)
