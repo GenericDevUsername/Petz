@@ -19,6 +19,10 @@ public class RegisteredItem : ItemData
   public string RegisteredId { get; private set; }
   public new List<OnUseAction> OnUse { get; set; } = [];
 
+  /// <summary>
+  ///  Use the item
+  /// </summary>
+  /// <param name="game"> The game data to use the item on </param>
   public void UseItem(GameData game)
   {
     Program.Log($"[DEBUG] Using item {Name} with {OnUse.Count} actions");

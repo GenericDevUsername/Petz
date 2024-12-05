@@ -9,7 +9,10 @@ public class PercentageBarComponent(int max, int current, int length, Color colo
     public int Length { get; set; } = length;
     public Color BarColor { get; set; } = color;
 
-    // return ██████████ colored by percentage 
+    /// <summary>
+    ///  Render the percentage bar
+    /// </summary>
+    /// <returns> The rendered percentage bar </returns>
     public string? Render()
     {
         int percentage = (int)Math.Round((double)Current / Max * Length);

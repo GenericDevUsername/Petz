@@ -12,6 +12,12 @@ public static class Renderer
     private static Thread? InputThread { get; set; }
     private static Thread? ConsoleResizeListener { get; set; }
 
+    /// <summary>
+    ///  Start the renderer with the specified view as the initial view.
+    /// </summary>
+    /// <param name="view"> The view to start the renderer with </param>
+    /// <exception cref="InvalidOperationException"> Thrown if the renderer has already been initialised </exception>
+    /// <exception cref="ArgumentNullException"> Thrown if the view is null </exception>
     public static void Start(IView? view)
     {
         // prevent multiple initialisations

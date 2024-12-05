@@ -17,6 +17,11 @@ public class GameSaveInventory
   public List<InventoryItem> Items { get; set; }
   public int Coins { get; set; }
 
+  /// <summary>
+  ///  Convert the game save inventory to a game inventory
+  /// </summary>
+  /// <param name="game"> The game data to attach the inventory to </param>
+  /// <returns> The game inventory if the save was converted successfully </returns>
   public GameInventory ToGameInventory(GameData game)
   {
     GameInventory inv = new GameInventory(game)

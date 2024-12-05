@@ -33,6 +33,10 @@ public class GamePet : RegisteredPet
   public int BodyTemperature { get; internal set; }
   public bool IsSick { get; internal set; }
 
+  /// <summary>
+  ///  Convert the game pet to a game save pet
+  /// </summary>
+  /// <returns> The game save pet </returns>
   public GameSavePet ToGameSavePet()
   {
     return new GameSavePet(this);

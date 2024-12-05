@@ -7,6 +7,9 @@ public class RoomManager
 {
   private readonly Dictionary<string, RegisteredRoom> _rooms = new();
 
+  /// <summary>
+  ///  Load rooms from the rooms.yml file
+  /// </summary>
   internal void LoadRooms()
   {
     string yamlFile = ReadFile();
@@ -41,6 +44,10 @@ public class RoomManager
       $"[DEBUG] Registered {registeredRoomCount} rooms: {string.Join(", ", _rooms.Values.Select(room => room.RoomName))}");
   }
 
+  /// <summary>
+  ///  Read the rooms.yml file
+  /// </summary>
+  /// <returns> The contents of the rooms.yml file </returns>
   private static string ReadFile()
   {
     if (File.Exists(Program.GameDataPath + "/rooms.yml")) return File.ReadAllText(Program.GameDataPath + "/rooms.yml");
@@ -48,11 +55,20 @@ public class RoomManager
     return string.Empty;
   }
 
+  /// <summary>
+  ///  Get a room from the registered id
+  /// </summary>
+  /// <param name="registeredId"> The registered id of the room </param>
+  /// <returns> The room if it exists, otherwise null </returns>
   public RegisteredRoom? GetRoom(string registeredId)
   {
     return _rooms[registeredId] ?? null;
   }
 
+  /// <summary>
+  ///  Get all rooms
+  /// </summary>
+  /// <returns> The list of rooms </returns>
   public List<RegisteredRoom> GetRooms()
   {
     return _rooms.Values.ToList();

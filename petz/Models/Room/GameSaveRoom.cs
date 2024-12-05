@@ -17,6 +17,10 @@ public class GameSaveRoom
   public float CurrentTemperature { get; private set; }
   public string RegisteredRoomId { get; set; }
 
+  /// <summary>
+  ///  Convert the game save room to a game room
+  /// </summary>
+  /// <returns> The game room if the save was converted successfully </returns>
   public GameRoom? ToGameRoom()
   {
     RegisteredRoom? roomData = GameManager.Rooms.GetRoom(RegisteredRoomId);

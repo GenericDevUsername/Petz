@@ -23,16 +23,28 @@ public class InventoryItem
   {
   }
   
+  /// <summary>
+  ///  Attach the item to the inventory
+  /// </summary>
+  /// <param name="inventory"> The inventory to attach the item to </param>
   public void SetInventory(GameInventory inventory)
   {
     Inventory = inventory;
   }
   
+  /// <summary>
+  ///  Get the item from the registered id
+  /// </summary>
+  /// <returns> The item </returns>
   public RegisteredItem GetItem()
   {
     return Item ??= GameManager.Items.GetItem(RegisteredId);
   }
 
+  /// <summary>
+  ///  Add an amount of the item to the inventory slot
+  /// </summary>
+  /// <param name="quantity"> The amount of the item to add </param>
   public void Add(int quantity)
   {
     if (Item == null) GetItem();
@@ -59,6 +71,10 @@ public class InventoryItem
     Quantity = quantity;
   }
 
+  /// <summary>
+  ///  Use the item
+  /// </summary>
+  /// <param name="amount"> The amount of the item to use </param>
   public void Use(int amount = 1)
   {
     if (Item == null) GetItem();

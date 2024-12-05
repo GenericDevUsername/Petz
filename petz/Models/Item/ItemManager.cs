@@ -7,6 +7,9 @@ public class ItemManager
 {
   private readonly Dictionary<string, RegisteredItem> _items = new();
 
+  /// <summary>
+  ///  Load items from the items.yml file
+  /// </summary>
   internal void LoadItems()
   {
     string yamlFile = ReadFile();
@@ -36,6 +39,10 @@ public class ItemManager
     Program.Log($"[DEBUG] Registered {registeredItemCount} items");
   }
 
+  /// <summary>
+  ///  Read the items.yml file
+  /// </summary>
+  /// <returns> The contents of the items.yml file </returns>
   private static string ReadFile()
   {
     if (File.Exists(Program.GameDataPath + "/items.yml")) return File.ReadAllText(Program.GameDataPath + "/items.yml");
@@ -44,11 +51,20 @@ public class ItemManager
 
   }
 
+  /// <summary>
+  ///  Get an item from the registered id
+  /// </summary>
+  /// <param name="registeredId"> The registered id of the item </param>
+  /// <returns> The item </returns>
   public RegisteredItem GetItem(string registeredId)
   {
     return _items[registeredId];
   }
 
+  /// <summary>
+  ///  Get all registered items
+  /// </summary>
+  /// <returns> A list of registered items </returns>
   public List<RegisteredItem> GetItems()
   {
     return _items.Values.ToList();

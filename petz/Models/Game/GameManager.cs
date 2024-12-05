@@ -37,6 +37,12 @@ public class GameManager
     File.WriteAllText(Program.GameSavesPath + $"/{data.GameId}.yml", yaml);
   }
 
+  /// <summary>
+  ///  Load a game from Program.GameSavesPath
+  /// </summary>
+  /// <param name="gameId"> The game id to load </param>
+  /// <returns></returns>
+  /// <exception cref="Exception"> If the game save is invalid </exception>
   public static GameManager? Load(string gameId)
   {
     string yaml = File.ReadAllText(Program.GameSavesPath + $"/{gameId}.yml");

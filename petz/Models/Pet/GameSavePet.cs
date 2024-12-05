@@ -33,7 +33,10 @@ public class GameSavePet
   public int BodyTemperature { get; set; }
   public bool IsSick { get; set; }
 
-
+  /// <summary>
+  ///  Convert the game save pet to a game pet
+  /// </summary>
+  /// <returns> The game pet if the save was converted successfully </returns>
   public GamePet? ToGamePet()
   {
     try

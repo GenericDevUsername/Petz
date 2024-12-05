@@ -14,6 +14,11 @@ public class GameInventory(GameData game)
     return new GameSaveInventory(this);
   }
 
+  /// <summary>
+  ///  Add an item to the inventory
+  /// </summary>
+  /// <param name="item"> The item to add </param>
+  /// <param name="quantity"> The quantity of the item to add </param>
   public void AddItem(RegisteredItem item, int quantity)
   {
     InventoryItem? existingItem = Items.FirstOrDefault(i => i.GetItem() == item);
@@ -23,6 +28,10 @@ public class GameInventory(GameData game)
       Items.Add(new InventoryItem(item, quantity, this));
   }
   
+  /// <summary>
+  ///  Modify the coins value in the inventory
+  /// </summary>
+  /// <param name="amount"> The amount to modify the coins by, can be negative </param>
   public void ModifyCoins(int amount)
   {
     Coins += Coins - amount < 0 ? 0 : amount;

@@ -27,6 +27,11 @@ public class GameData
     };
   }
 
+  /// <summary>
+  ///  Load a game save into the game
+  /// </summary>
+  /// <param name="save"> The save to load </param>
+  /// <returns> The game data if the save was loaded successfully </returns>
   public GameData? LoadGameSave(GameSave save)
   {
     GamePet? gamePet = save.Pet.ToGamePet();
@@ -43,6 +48,9 @@ public class GameData
     return this;
   }
   
+  /// <summary>
+  ///  Start the game loop
+  /// </summary>
   public void Start()
   {
     if (Running)
@@ -69,6 +77,9 @@ public class GameData
     _tickThread.Start();
   }
   
+  /// <summary>
+  ///  Stop the game loop
+  /// </summary>
   public void Stop()
   {
     Running = false;
