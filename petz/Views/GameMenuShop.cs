@@ -188,6 +188,10 @@ public class GameMenuShop(GameManager game) : IView
                     new Markup($"Hunger: {new PercentageBarComponent(Game.Data.Pet.MaxHunger, Game.Data.Pet.Hunger, 26 - "Hunger: ".Length - 3, Color.Yellow).Render()}"),
                     new Markup($"Happiness: {new PercentageBarComponent(Game.Data.Pet.MaxHappiness, Game.Data.Pet.Happiness, 26 - "Happiness: ".Length - 3, Color.Red).Render()}"),
                     new Markup($"Coins: ${Game.Data.Inventory.Coins}"),
+                    new Rule($"Controls"),
+                    new Markup("[black on silver]-[/] [black on silver]+[/] - Change Temp"),
+                    new Markup(@"[black on silver]/\[/] [black on silver]\/[/] - Select"),
+                    new Markup("[black on silver]<enter>[/] - Purchase"),
                     new Rule(),
                     new Rows(ActionLog.TakeLast(Console.WindowHeight - 20))
                 )
