@@ -13,6 +13,7 @@ public class PetData
     MaxHealth = petData.MaxHealth;
     MaxEnergy = petData.MaxEnergy;
     MaxBodyTemperature = petData.MaxBodyTemperature;
+    MinBodyTemperature = petData.MinBodyTemperature;
     PreferredTemperature = petData.PreferredTemperature;
   }
 

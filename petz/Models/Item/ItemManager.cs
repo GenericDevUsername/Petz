@@ -10,9 +10,9 @@ public class ItemManager
   /// <summary>
   ///  Load items from the items.yml file
   /// </summary>
-  internal void LoadItems()
+  public void LoadItems(string? itemsYaml = null)
   {
-    string yamlFile = ReadFile();
+    string yamlFile = itemsYaml ?? ReadFile();
 
     // Load items from data/items.yml file
     IDeserializer deserializer = new DeserializerBuilder()

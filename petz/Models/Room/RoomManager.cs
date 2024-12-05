@@ -10,9 +10,9 @@ public class RoomManager
   /// <summary>
   ///  Load rooms from the rooms.yml file
   /// </summary>
-  internal void LoadRooms()
+  public void LoadRooms(string? roomsYaml = null)
   {
-    string yamlFile = ReadFile();
+    string yamlFile = roomsYaml ?? ReadFile();
 
     // Load items from rooms.yml file
     IDeserializer deserializer = new DeserializerBuilder()

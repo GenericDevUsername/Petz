@@ -10,9 +10,9 @@ public class PetManager
   /// <summary>
   ///  Load pets from the pets.yml file
   /// </summary>
-  internal void LoadPets()
+  public void LoadPets(string? petsYaml = null)
   {
-    string yamlFile = ReadFile();
+    string yamlFile = petsYaml ?? ReadFile();
 
     // Load items from rooms.yml file
     IDeserializer deserializer = new DeserializerBuilder()

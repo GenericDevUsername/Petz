@@ -25,13 +25,13 @@ public class GamePet : RegisteredPet
   /// STATISTICS ///
   public DateTime DateCreated { get; internal set; }
 
-  public int Hunger { get; internal set; }
-  public int Happiness { get; internal set; }
-  public int Love { get; internal set; }
-  public int Health { get; internal set; }
-  public int Energy { get; internal set; }
-  public int BodyTemperature { get; internal set; }
-  public bool IsSick { get; internal set; }
+  public int Hunger { get; set; }
+  public int Happiness { get; set; }
+  public int Love { get; set; }
+  public int Health { get; set; }
+  public int Energy { get; set; }
+  public int BodyTemperature { get; set; }
+  public bool IsSick { get; set; }
 
   /// <summary>
   ///  Convert the game pet to a game save pet

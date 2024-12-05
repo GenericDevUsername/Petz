@@ -34,6 +34,6 @@ public class GameInventory(GameData game)
   /// <param name="amount"> The amount to modify the coins by, can be negative </param>
   public void ModifyCoins(int amount)
   {
-    Coins += Coins - amount < 0 ? 0 : amount;
+    Coins = Coins + amount < 0 ? 0 : Coins + amount;
   }
 }

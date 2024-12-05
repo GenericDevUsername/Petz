@@ -1,5 +1,7 @@
 ﻿using System.Text;
 using petz.Models.Game;
+using petz.Models.Inventory;
+using petz.Models.Item;
 using petz.ViewModel;
 using Spectre.Console;
 using Spectre.Console.Extensions;
@@ -10,9 +12,12 @@ namespace petz.Views;
 public class GameMenuShop(GameManager game) : IView
 {
     private Layout? Layout { get; set; }
+    private List<RegisteredItem> ShopItems { get; set; } = [];
+    private int _visibleRules = 0;
     private string[] Options { get; } = ["💾", "🏠", "🛒", "📦"];
     private GameManager Game { get; set; } = game;
     private Thread? _updaterThread;
+    private bool _rendering = false;
     private int SelectedOption { get; set; }
     public string ConsoleTitle { get; set; } = "PetzGame - Game";
     
@@ -26,11 +31,19 @@ public class GameMenuShop(GameManager game) : IView
 
     public void Initialize()
     {
+        for (int i = 0; i < GameManager.Items.GetItems().Count; i++)
+        {
+            RegisteredItem item = GameManager.Items.GetItems()[i];
+            if (item.ItemCategory == null) continue;
+            ShopItems.Add(item);
+        }
+        ShopItems.Sort((a, b) => string.Compare(a.ItemCategory, b.ItemCategory, StringComparison.Ordinal));
+        
         _updaterThread = new Thread(() =>
         {
             do
             {
-                Render();
+                if (!_rendering) Render();
                 Thread.Sleep(1000);
             } while (Renderer.CurrentView == this);
         })
@@ -42,6 +55,7 @@ public class GameMenuShop(GameManager game) : IView
     
     public void Render()
     {
+        _rendering = true;
         switch (Game.Data.Pet.IsSick)
         {
             case true when !SickAlerted:
@@ -86,9 +100,38 @@ public class GameMenuShop(GameManager game) : IView
                 .Expand());
         
         // add menu panel
+        // add menu panel
+        int scrollStart = (Console.WindowHeight - 12) / 4 - 1;
+        _visibleRules = 0;
+        scrollStart = scrollStart < 0 ? 0 : scrollStart;
+        int skipAmount = SelectedOption < scrollStart ? 0 : SelectedOption - scrollStart;
+        List<RegisteredItem> scrollItems = ShopItems.Skip(skipAmount).ToList();
+        string currentCategory = "";
         Layout["LLTop"].Update(
             new Panel(
-                ""
+                ShopItems.Count > 0 ? new Rows(scrollItems.Select(item =>
+                {
+                    List<IRenderable> renderables =
+                    [
+                        new Panel(new Rows(
+                            new Markup($"[yellow]${item.ShopPrice ?? 0}[/] | {item.Icon} {item.Name} {(Game.Data.Inventory.Coins < item.ShopPrice ? "| [red]Can't Afford[/]" : "")}"),
+                            new Markup($"[grey]{(item.Description.EscapeMarkup() == "" ? "No description" : item.Description.EscapeMarkup())}[/]")
+                        ))
+                        {
+                            Border = BoxBorder.Rounded,
+                            Width = Console.WindowWidth,
+                            Height = 4,
+                            BorderStyle = ShopItems[SelectedOption] == item
+                                ? Game.Data.Inventory.Coins < item.ShopPrice ? new Style(Color. Red) : new Style(Color.Yellow)
+                                : Game.Data.Inventory.Coins < item.ShopPrice ? new Style(Color.Grey) : new Style(Color.White)
+                        }.Collapse()
+                    ];
+                    if (currentCategory == item.ItemCategory) return new Rows(renderables);
+                    _visibleRules++;
+                    currentCategory = item.ItemCategory ?? currentCategory;
+                    renderables.Insert(0, new Rule($"[gray]{currentCategory}[/]"){ Style = new Style(Color.Grey) });
+                    return  new Rows(renderables);
+                })).Expand() : Align.Center(new Markup("No items in shop..."), VerticalAlignment.Middle)
             )
             {
                 Header = new PanelHeader("Shop")
@@ -144,7 +187,7 @@ public class GameMenuShop(GameManager game) : IView
                     new Markup($"Health: {new PercentageBarComponent(Game.Data.Pet.MaxHealth, Game.Data.Pet.Health, 26 - "Health: ".Length - 3, Color.Green).Render()}"),
                     new Markup($"Hunger: {new PercentageBarComponent(Game.Data.Pet.MaxHunger, Game.Data.Pet.Hunger, 26 - "Hunger: ".Length - 3, Color.Yellow).Render()}"),
                     new Markup($"Happiness: {new PercentageBarComponent(Game.Data.Pet.MaxHappiness, Game.Data.Pet.Happiness, 26 - "Happiness: ".Length - 3, Color.Red).Render()}"),
-                    new Markup($"Love: {Game.Data.Pet.Love} [red]❤[/]"),
+                    new Markup($"Coins: ${Game.Data.Inventory.Coins}"),
                     new Rule(),
                     new Rows(ActionLog.TakeLast(Console.WindowHeight - 20))
                 )
@@ -177,6 +220,7 @@ public class GameMenuShop(GameManager game) : IView
         // Render the layout
         Console.SetCursorPosition(0, 0);
         AnsiConsole.Write(Layout);
+        _rendering = false;
     }
 
     public void TakeInput(ConsoleKeyInfo key)
@@ -202,6 +246,37 @@ public class GameMenuShop(GameManager game) : IView
             case ConsoleKey.NumPad4:
                 Renderer.ChangeView(new GameMenuInventory(Game, ActionLog));
                 break;
+            
+            case ConsoleKey.UpArrow:
+                SelectedOption = SelectedOption - 1 == -1
+                    ? (ShopItems.Count) - 1
+                    : SelectedOption - 1;
+                break;
+            
+            case ConsoleKey.DownArrow:
+                SelectedOption = SelectedOption == (ShopItems.Count) - 1 ? 0 : SelectedOption + 1;
+                break;
+            
+            case ConsoleKey.Enter:
+                if (Game.Data.Inventory.Coins < ShopItems[SelectedOption].ShopPrice)
+                {
+                    ActionLog.Add(new Markup($"[red]![/] You can't afford {ShopItems[SelectedOption].Name}"));
+                    break;
+                }
+                ActionLog.Add(new Markup($"[green]![/] Purchased {ShopItems[SelectedOption].Name}"));
+                Game.Data.Inventory.ModifyCoins(-ShopItems[SelectedOption].ShopPrice ?? 0);
+                Game.Data.Inventory.AddItem(ShopItems[SelectedOption], 1);
+                break;
+            
+            case ConsoleKey.OemMinus:
+            case ConsoleKey.Subtract:
+                Game.Data.Room.CurrentTemperature -= 0.5f;
+                break;
+            
+            case ConsoleKey.OemPlus:
+            case ConsoleKey.Add:
+                Game.Data.Room.CurrentTemperature += 0.5f;
+                break; 
         }
     }
 }

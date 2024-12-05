@@ -38,10 +38,15 @@ public partial class VariableStore
   {
     _dynamicVariables["pet.name"] = () => game.Pet.Name;
     _dynamicVariables["pet.health"] = () => game.Pet.Health.ToString();
+    _dynamicVariables["pet.health.max"] = () => game.Pet.MaxHealth.ToString();
     _dynamicVariables["pet.hunger"] = () => game.Pet.Hunger.ToString();
+    _dynamicVariables["pet.hunger.max"] = () => game.Pet.MaxHunger.ToString();
     _dynamicVariables["pet.happiness"] = () => game.Pet.Happiness.ToString();
+    _dynamicVariables["pet.happiness.max"] = () => game.Pet.MaxHappiness.ToString();
     _dynamicVariables["pet.energy"] = () => game.Pet.Energy.ToString();
+    _dynamicVariables["pet.energy.max"] = () => game.Pet.MaxEnergy.ToString();
     _dynamicVariables["pet.love"] = () => game.Pet.Love.ToString();
+    _dynamicVariables["pet.love.max"] = () => game.Pet.MaxLove.ToString();
     _dynamicVariables["pet.isSick"] = () => game.Pet.IsSick.ToString();
     _dynamicVariables["pet.bodyTemperature"] = () => game.Pet.BodyTemperature.ToString();
     _dynamicVariables["pet.dateCreated"] = () =>

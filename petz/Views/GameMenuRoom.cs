@@ -13,6 +13,7 @@ public class GameMenuRoom(GameManager game) : IView
     private string[] Options { get; } = ["💾", "🏠", "🛒", "📦"];
     private GameManager Game { get; set; } = game;
     private Thread? _updaterThread;
+    private bool _rendering;
     private int SelectedOption { get; set; }
     public string ConsoleTitle { get; set; } = "PetzGame - Game";
     
@@ -32,7 +33,7 @@ public class GameMenuRoom(GameManager game) : IView
         {
             do
             {
-                Render();
+                if (!_rendering) Render();
                 Thread.Sleep(1000);
             } while (Renderer.CurrentView == this);
         })
@@ -44,6 +45,7 @@ public class GameMenuRoom(GameManager game) : IView
     
     public void Render()
     {
+        _rendering = true;
         switch (Game.Data.Pet.IsSick)
         {
             case true when !SickAlerted:
@@ -147,7 +149,7 @@ public class GameMenuRoom(GameManager game) : IView
                     new Markup($"Health: {new PercentageBarComponent(Game.Data.Pet.MaxHealth, Game.Data.Pet.Health, 26 - "Health: ".Length - 3, Color.Green).Render()}"),
                     new Markup($"Hunger: {new PercentageBarComponent(Game.Data.Pet.MaxHunger, Game.Data.Pet.Hunger, 26 - "Hunger: ".Length - 3, Color.Yellow).Render()}"),
                     new Markup($"Happiness: {new PercentageBarComponent(Game.Data.Pet.MaxHappiness, Game.Data.Pet.Happiness, 26 - "Happiness: ".Length - 3, Color.Red).Render()}"),
-                    new Markup($"Love: {Game.Data.Pet.Love} [red]❤[/]"),
+                    new Markup($"Coins: ${Game.Data.Inventory.Coins}"),
                     new Rule($"Controls"),
                     new Markup("[black on silver]-[/] [black on silver]+[/] - Change Temp"),
                     new Rule(),
@@ -182,6 +184,7 @@ public class GameMenuRoom(GameManager game) : IView
         // Render the layout
         Console.SetCursorPosition(0, 0);
         AnsiConsole.Write(Layout);
+        _rendering = false;
     }
 
     public void TakeInput(ConsoleKeyInfo key)

@@ -32,19 +32,11 @@ internal abstract class Program
   private static void Main(string[] args)
   {
     // if --open-local-data is passed, open the local data folder
-    if (args.Contains("--open-local-folder"))
+    if (args.Contains("--show-local-folder"))
     {
-      // open the local data folder
-      try
-      {
-        Process.Start(GameDataPath);   
-      }
-      catch (Exception e)
-      {
-        // open other way
-        
-      }
-      Thread.Sleep(1000);
+      Console.WriteLine(GameDataPath);
+      Console.WriteLine("Press any key to exit...");
+      Console.ReadKey(true);
       return;
     }
     Console.OutputEncoding = Encoding.UTF8;
