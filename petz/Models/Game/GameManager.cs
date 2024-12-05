@@ -77,6 +77,7 @@ public class GameManager
 
     foreach (string file in Directory.GetFiles(Program.GameSavesPath))
     {
+      if (!file.EndsWith(".yml")) continue;
       string yaml = File.ReadAllText(file);
 
       IDeserializer deserializer = new DeserializerBuilder()
@@ -94,8 +95,10 @@ public class GameManager
       }
       catch (Exception e)
       {
+        File.Move(file, file + ".invalid");
         isValid = false;
         gameData = new GameData();
+        continue;
       }
 
       saves.Add(new GameManager { Data = gameData, IsValid = isValid });
