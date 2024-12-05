@@ -20,8 +20,20 @@ public class RoomManager
       .IgnoreUnmatchedProperties()
       .Build();
 
-    Dictionary<string, RoomData>? loadedItems =
-      deserializer.Deserialize<Dictionary<string, RoomData>?>(yamlFile) ?? [];
+    Dictionary<string, RoomData>? loadedItems;
+    try
+    {
+      loadedItems = deserializer.Deserialize<Dictionary<string, RoomData>?>(yamlFile) ?? [];
+    }
+    catch (Exception e)
+    {
+      loadedItems = [];
+      // regenerating the file if it fails to load
+      Program.Log($"[ERROR] Failed to load rooms.yml: {e.Message}");
+      Program.Log("[DEBUG] Regenerating rooms.yml");
+      RegenerateFile();
+      LoadRooms();
+    }
 
     // register rooms
     Program.Log(
@@ -53,6 +65,13 @@ public class RoomManager
     if (File.Exists(Program.GameDataPath + "/rooms.yml")) return File.ReadAllText(Program.GameDataPath + "/rooms.yml");
     File.WriteAllText(Program.GameDataPath + "/rooms.yml", DefaultFiles.Rooms);
     return string.Empty;
+  }
+  
+  private static void RegenerateFile()
+  {
+    // make backup of rooms.yml at rooms.yml.yyMMddHHmmss.backup
+    File.Move(Program.GameDataPath + "/rooms.yml", Program.GameDataPath + $"/rooms.yml.{DateTime.Now:yyMMddHHmmss}.backup");
+    File.WriteAllText(Program.GameDataPath + "/rooms.yml", DefaultFiles.Rooms);
   }
 
   /// <summary>

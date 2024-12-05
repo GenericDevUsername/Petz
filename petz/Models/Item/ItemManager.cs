@@ -20,8 +20,20 @@ public class ItemManager
       .IgnoreUnmatchedProperties()
       .Build();
 
-    Dictionary<string, ItemData>? loadedItems =
-      deserializer.Deserialize<Dictionary<string, ItemData>?>(yamlFile) ?? [];
+    Dictionary<string, ItemData>? loadedItems;
+    try
+    {
+      loadedItems = deserializer.Deserialize<Dictionary<string, ItemData>?>(yamlFile) ?? [];
+    }
+    catch (Exception e)
+    {
+      loadedItems = [];
+      // regenerating the file if it fails to load
+      Program.Log($"[ERROR] Failed to load rooms.yml: {e.Message}");
+      Program.Log("[DEBUG] Regenerating rooms.yml");
+      RegenerateFile();
+      LoadItems();
+    }
 
     // register items
     int registeredItemCount = 0;
@@ -49,6 +61,13 @@ public class ItemManager
     File.WriteAllText(Program.GameDataPath + "/items.yml", DefaultFiles.Items);
     return string.Empty;
 
+  }
+  
+  private static void RegenerateFile()
+  {
+    // make backup of rooms.yml at rooms.yml.yyMMddHHmmss.backup
+    File.Move(Program.GameDataPath + "/items.yml", Program.GameDataPath + $"/items.yml.{DateTime.Now:yyMMddHHmmss}.backup");
+    File.WriteAllText(Program.GameDataPath + "/items.yml", DefaultFiles.Items);
   }
 
   /// <summary>

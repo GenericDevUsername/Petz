@@ -20,8 +20,20 @@ public class PetManager
       .IgnoreUnmatchedProperties()
       .Build();
 
-    Dictionary<string, PetData>? loadedItems =
-      deserializer.Deserialize<Dictionary<string, PetData>?>(yamlFile) ?? [];
+    Dictionary<string, PetData>? loadedItems;
+    try
+    {
+      loadedItems = deserializer.Deserialize<Dictionary<string, PetData>?>(yamlFile) ?? [];
+    }
+    catch (Exception e)
+    {
+      loadedItems = [];
+      // regenerating the file if it fails to load
+      Program.Log($"[ERROR] Failed to load rooms.yml: {e.Message}");
+      Program.Log("[DEBUG] Regenerating rooms.yml");
+      RegenerateFile();
+      LoadPets();
+    }
 
     // register pets
     int registeredRoomCount = 0;
@@ -54,6 +66,13 @@ public class PetManager
     }
 
     return File.ReadAllText(Program.GameDataPath + "/pets.yml");
+  }
+  
+  private static void RegenerateFile()
+  {
+    // make backup of rooms.yml at rooms.yml.yyMMddHHmmss.backup
+    File.Move(Program.GameDataPath + "/pets.yml", Program.GameDataPath + $"/pets.yml.{DateTime.Now:yyMMddHHmmss}.backup");
+    File.WriteAllText(Program.GameDataPath + "/pets.yml", DefaultFiles.Pets);
   }
 
   /// <summary>
