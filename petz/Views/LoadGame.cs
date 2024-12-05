@@ -49,10 +49,18 @@ public class LoadGame : IView
     for (int i = 0; i < saveFiles.Count; i++)
     {
       GameManager saveFile = saveFiles[i];
+      bool markup = true;
+      try
+      {
+        Markup markupTry = new Markup(saveFile.Data.Pet.Name);
+      } catch
+      {
+        markup = false;
+      }
       Table table = new();
       table.AddColumn(!saveFile.IsValid
           ? new TableColumn(new Markup("[red]Invalid Save[/]"))
-          : new TableColumn(new Markup($"{saveFile.Data.Pet.Icon ?? "#"} {saveFile.Data.Pet.Name}")));
+          : new TableColumn(new Markup($"{saveFile.Data.Pet.Icon ?? "#"} {(!markup ? saveFile.Data.Pet.Name.EscapeMarkup() : saveFile.Data.Pet.Name)}")));
       table.AddColumn(
           saveFile.IsValid
               ? new TableColumn(new Markup($"[maroon]❤[/]  [red]{saveFile.Data?.Pet.Love.ToString() ?? "???"}[/]"))
@@ -97,11 +105,19 @@ public class LoadGame : IView
     // Update the preview boxes
     if (SelectedOption < _saveFiles.Count)
     {
+      bool markup = true;
+      try
+      {
+        Markup markupTry = new Markup(_saveFiles[SelectedOption].Data.Pet.Name);
+      } catch
+      {
+        markup = false;
+      }
       Panel brTop = new(
           new Markup(_saveFiles[SelectedOption].Data.Pet.Icon).Centered()
       )
       {
-        Header = new PanelHeader(_saveFiles[SelectedOption].Data.Pet.Name).Centered()
+        Header = new PanelHeader(!markup ? _saveFiles[SelectedOption].Data.Pet.Name.EscapeMarkup() : _saveFiles[SelectedOption].Data.Pet.Name, Justify.Center)
       };
       Layout["BRTop"].Update(brTop.Expand());
       Layout["BRBottom"].Update(new Panel(new Rows(

@@ -56,17 +56,26 @@ public class GameMenuShop(GameManager game) : IView
     public void Render()
     {
         _rendering = true;
+        bool renderName = true;
+        try
+        {
+            Markup petName = new Markup(Game.Data.Pet.Name);
+        } catch
+        {
+            renderName = false;
+        }
         switch (Game.Data.Pet.IsSick)
         {
             case true when !SickAlerted:
-                ActionLog.Add(new Markup($"[red]![/] {Game.Data.Pet.Name} has fallen ill!"));
+                ActionLog.Add(new Markup($"[red]![/] {(!renderName ? Game.Data.Pet.Name.EscapeMarkup() : Game.Data.Pet.Name)} has fallen ill!"));
                 SickAlerted = true;
                 break;
             case false when SickAlerted:
-                ActionLog.Add(new Markup($"[green]![/] {Game.Data.Pet.Name} has recovered!"));
+                ActionLog.Add(new Markup($"[green]![/] {(!renderName ? Game.Data.Pet.Name.EscapeMarkup() : Game.Data.Pet.Name)} has recovered!"));
                 SickAlerted = false;
                 break;
         }
+        
         FigletFont font = FigletFont.Load(@"Assets\Font\logo.flf");
         // Create the layout
         Layout = new Layout("Root")
@@ -183,7 +192,7 @@ public class GameMenuShop(GameManager game) : IView
         Layout["LRStats"].Update(
             new Panel(
                 new Rows(
-                    new Rule($"{Game.Data?.Pet.Name}'s Stats"),
+                    new Rule($"{(!renderName ? Game.Data.Pet.Name.EscapeMarkup() : Game.Data.Pet.Name)}'s Stats"),
                     new Markup($"Health: {new PercentageBarComponent(Game.Data.Pet.MaxHealth, Game.Data.Pet.Health, 26 - "Health: ".Length - 3, Color.Green).Render()}"),
                     new Markup($"Hunger: {new PercentageBarComponent(Game.Data.Pet.MaxHunger, Game.Data.Pet.Hunger, 26 - "Hunger: ".Length - 3, Color.Yellow).Render()}"),
                     new Markup($"Happiness: {new PercentageBarComponent(Game.Data.Pet.MaxHappiness, Game.Data.Pet.Happiness, 26 - "Happiness: ".Length - 3, Color.Red).Render()}"),

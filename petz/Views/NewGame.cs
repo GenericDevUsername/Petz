@@ -125,7 +125,7 @@ public class NewGame : IView
 
     RegisteredPet? selectedPet = pets.Find(pet => pet.RegisteredId == (_selectionIndex == 1 ? _selectedPet : (_confirmedPet ?? _selectedPet)));
     Layout["LR"].Update(
-      new Panel("New Pet")
+      new Panel(selectedPet?.Description ?? "Select a pet to view its description.")
       {
         Border = BoxBorder.Rounded,
         BorderStyle = new Style(Color.White),
